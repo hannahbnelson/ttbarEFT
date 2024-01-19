@@ -1,5 +1,19 @@
+# Temporary and binary files
+*.log
+.*.swp
+*/.ipynb_checkpoints/*
+__pycache__/*
+.cache/*
+
+# User generated files from runnign code
+analysis/*/wq-executor-tmp-*
+analysis/*/wq-*.summary
+analysis/*/envs
+analysis/*/histos
+
 # Distribution / packaging
 *.egg
+*.egg-info
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

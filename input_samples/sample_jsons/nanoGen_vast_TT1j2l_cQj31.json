@@ -1,0 +1,13 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TT1j2l",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/TT1j2l_cQj31/nanoGen_101.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/TT1j2l_cQj31/nanoGen_102.root" 
+  ],
+  "nSumOfWeights": 1.0,
+  "isData": false
+}
