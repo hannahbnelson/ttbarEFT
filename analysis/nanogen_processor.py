@@ -48,7 +48,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "pT of the sum of the tops", 50, 0, 1000)),
             "ht"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
             "jets_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
-            "j0pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
+            "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
             "ntops"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
             "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)), 
             "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)), 
@@ -130,12 +130,13 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        #norm = (xsec/sow)
-        norm = 1
+        norm = (xsec/sow)
         if eft_coeffs is None: 
-            event_weights = events["genWeight"]
+            genw = events["genWeight"]
         else:
-            event_weights = norm*np.ones_like(events['event'])
+            genw = np.ones_like(events['event'])
+
+        event_weights = norm*genw
 
 
         ######## Fill histos ########
