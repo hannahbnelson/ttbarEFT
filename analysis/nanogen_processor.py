@@ -138,7 +138,6 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         event_weights = norm*genw
 
-
         ######## Fill histos ########
 
         hout = self._histo_dict
@@ -151,13 +150,11 @@ class AnalysisProcessor(processor.ProcessorABC):
             "ht"        : ht_cut,
             "ntops"     : ntops_cut, 
             "jets_pt"   : jets_pt_cut,
-            "j0pt"      : j0pt_cut,
+            "j0pt"      : ak.flatten(j0pt_cut),
             "mll"       : mll,
         }
 
-        eft_coeffs_cut = eft_coeffs
-        if eft_coeffs is not None:
-            eft_coeffs_cut = eft_coeffs[event_selection_mask]
+        eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
 
         for var_name, var_values in variables_to_fill.items():
 
@@ -167,6 +164,8 @@ class AnalysisProcessor(processor.ProcessorABC):
                 "weight"    : event_weights[event_selection_mask],
                 "eft_coeff" : eft_coeffs_cut,
             }
+
+            print(fill_info, '\n\n\n\n')
 
             hout[var_name].fill(**fill_info)
 
