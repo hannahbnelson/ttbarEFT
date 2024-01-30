@@ -1,0 +1,12 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TT1j2l",
+  "options": "",
+  "files": [
+      "/project01/ndcms/hnelson2/mc_samples/central_UL/skims/new-lepMVA-v2/FullRun2/v2/UL17_TTJets/output_2014.root"
+  ],
+  "nSumOfWeights": 1.0,
+  "isData": false
+}
