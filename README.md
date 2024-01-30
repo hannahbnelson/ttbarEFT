@@ -57,6 +57,8 @@ First, `cd` into `analysis`. Here you will find the `run_wq_processor.py` script
 python run_processor.py --outname OutputName <PathToInputFile>
 ```
 This creates the tasks, but you need to request some workers to execute them on distributed workers. 
+
+## Submit workers on glados
 Please note that the workers must be submitted from the same environment that you are running the run script from so open a new ssh session to `glados` and run these commands: 
 ```
 unset PYTHONPATH
@@ -81,3 +83,17 @@ condor_submit_workers -M ${USER}-workqueue-coffea -t 900 --cores 12 --memory 480
 ```
 
 You can monitor the status of the workers with `work_queue_status`. 
+
+## Submit workers on CRC opportunistic resources
+First, login to the ND CRC condor node and activate the conda environment: 
+```
+ssh glados
+ssh condorfe.crc.nd.edu
+unset PYTHONPATH
+conda activate ttbarEFT-env
+```
+
+The CRC says to limit the number of cores to 4 or less: 
+```
+condor_submit_workers -M ${USER}-workqueue-coffea -t 900 --cores 4 --memory 48000 --disk 100000 10
+```
