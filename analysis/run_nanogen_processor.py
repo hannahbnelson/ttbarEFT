@@ -13,7 +13,7 @@ from coffea.nanoevents import NanoAODSchema
 from topcoffea.modules import utils
 import topcoffea.modules.remote_environment as remote_environment
 
-import nanogen_processor
+import nanogen_processor_with_weights as nanogen_processor
 
 LST_OF_KNOWN_EXECUTORS = ["futures","work_queue"]
 
@@ -89,8 +89,6 @@ if __name__ == '__main__':
         else:
             allInputFiles.append(jsonFile)
 
-    print("allInputFiles: ", allInputFiles)
-
     # Read from cfg files
     for f in allInputFiles:
         if not os.path.isfile(f):
@@ -150,7 +148,7 @@ if __name__ == '__main__':
     wc_lst = wc_lst
 
     # Run the processor and get the output
-    processor_instance = nanogen_processor.AnalysisProcessor(samplesdict,wc_lst,do_errors=True)
+    processor_instance = nanogen_processor.AnalysisProcessor(samplesdict,wc_lst,hist_lst)
 
     if executor == "work_queue":
         executor_args = {

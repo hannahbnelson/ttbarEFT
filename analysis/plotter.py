@@ -5,6 +5,8 @@ import topcoffea.modules.HistEFT as HistEFT
 import topcoffea.modules.eft_helper as efth
 import gzip #read zipped pickle file
 import matplotlib.pyplot as plt #plot histograms
+from matplotlib.backends.backend_pdf import PdfPages
+import topcoffea.modules.utils as utils
 import mplhep as hep
 import numpy as np
 
@@ -14,13 +16,15 @@ params = {'axes.labelsize': 20,
           'legend.fontsize':20}
 plt.rcParams.update(params)
 
+fin = 'cfg_test.pkl.gz'
 #fin = 'TT1j2l_cQj31.pkl.gz'
 #fin = "TT2j2l_cQj31.pkl.gz"
-fin = "histos.pkl.gz"
+#fin = "central_ttbarUL17.pkl.gz"
+#fin = 'TT1j2l_RezaReweight.pkl.gz'
 
 if fin.endswith('.pkl.gz'):
     label = fin[:-7]
-else: 
+else:
     label = fin
 print(label)
 
@@ -28,26 +32,37 @@ hists = {}
 
 ###### Define different reweight points ######
 
-ref_pts = {"ctGIm": 1.0, "ctGRe":0.7, "cQj38": 9.0, "cQj18": 7.0, 
+orig_pts = {"ctGIm": 1.0, "ctGRe":0.7, "cQj38": 9.0, "cQj18": 7.0,
             "cQu8": 9.5, "cQd8": 12.0, "ctj8": 7.0, "ctu8": 9.0,
-            "ctd8": 12.4, "cQj31": 3.0, "cQj11": 4.2, "cQu1": 5.5, 
+            "ctd8": 12.4, "cQj31": 3.0, "cQj11": 4.2, "cQu1": 5.5,
             "cQd1": 7.0, "ctj1": 4.4, "ctu1": 5.4, "ctd1": 7.0}
 
-rwgt5_pts = {"ctGIm": 5.0, "ctGRe":5.0, "cQj38": 5.0, "cQj18": 5.0, 
-            "cQu8": 5.0, "cQd8": 5.0, "ctj8": 5.0, "ctu8": 5.0,
-            "ctd8": 5.0, "cQj31": 5.0, "cQj11": 5.0, "cQu1": 5.0, 
-            "cQd1": 5.0, "ctj1": 5.0, "ctu1": 5.0, "ctd1": 5.0}
+halforig_pts = {"ctGIm": 0.5, "ctGRe":0.35, "cQj38": 4.5, "cQj18": 3.5,
+                "cQu8": 4.75, "cQd8": 6.0, "ctj8": 3.5, "ctu8": 4.5,
+                "ctd8": 6.2, "cQj31": 1.5, "cQj11": 2.1, "cQu1": 2.75,
+                "cQd1": 3.5, "ctj1": 2.2, "ctu1": 2.7, "ctd1": 3.5}
 
+qtorig_pts = {"ctGIm": 0.25, "ctGRe":0.175, "cQj38": 2.25, "cQj18": 1.75,
+                "cQu8": 2.375, "cQd8": 3.0, "ctj8": 1.75, "ctu8": 2.25,
+                "ctd8": 3.1, "cQj31": 0.75, "cQj11": 1.05, "cQu1": 1.375,
+                "cQd1": 1.75, "ctj1": 1.1, "ctu1": 1.35, "ctd1": 1.75}
+
+dblorig_pts = {"ctGIm": 2.0, "ctGRe":1.4, "cQj38": 18.0, "cQj18": 14.0,
+                "cQu8": 19.0, "cQd8": 24.0, "ctj8": 14.0, "ctu8": 18.0,
+                "ctd8": 24.8, "cQj31": 6.0, "cQj11": 8.4, "cQu1": 11.0,
+                "cQd1": 14.0, "ctj1": 8.8, "ctu1": 10.8, "ctd1": 14.0}
 
 ###### Open pkl file of histograms ######
 
-with gzip.open(fin) as fin: 
-    hin = pickle.load(fin)
-    for k in hin.keys():
-        if k in hists: 
-            hists[k]+=hin[k]
-        else: 
-            hists[k]=hin[k]
+# with gzip.open(fin) as fin:
+#     hin = pickle.load(fin)
+#     for k in hin.keys():
+#         if k in hists:
+#             hists[k]+=hin[k]
+#         else:
+#             hists[k]=hin[k]
+
+hists = utils.get_hist_from_pkl(fin, allow_empty=False)
 
 
 ###### Make list of reweight points in the same order as the wc list in the hist ######
@@ -57,10 +72,11 @@ def order_rwgt_pts(h,rwgt_dict):
     rwgt_list = []
 
     for name in wc_names:
-        rwgt_list.append(ref_pts[name])
+        rwgt_list.append(rwgt_dict[name])
 
-    return rwgt_list  
+    return rwgt_list
 
+print(hists)
 
 ###### Plotting Functions ######
 
@@ -69,7 +85,7 @@ def plot_hist_NOrwgt(hists, name, label):
     fig, ax = plt.subplots(1,1) #create an axis for plotting
     hist.plot1d(h, ax=ax, stack=True)
     ax.legend()
-    figname = label + '_NOrwgt_' + name + '.pdf'
+    figname = label + name + '.png'
     fig.savefig(figname)
     print("Histogram saved to:", figname)
     plt.close(fig)
@@ -79,8 +95,8 @@ def plot_hist_sm(hists, name, label):
     h.set_sm()
     fig, ax = plt.subplots(1,1) #create an axis for plotting
     hist.plot1d(h, ax=ax, stack=True)
-    ax.legend()     
-    figname = label + '_SMrwgt_' + name + '.pdf'
+    ax.legend()
+    figname = label + '_SM_' + name + '.png'
     fig.savefig(figname)
     print("Histogram saved to:", figname)
     plt.close(fig)
@@ -93,17 +109,18 @@ def plot_hist_rwgt(hists, name, label, rwgt_dict):
     fig, ax = plt.subplots(1,1) #create an axis for plotting
     hist.plot1d(h, ax=ax, stack=True)
     ax.legend()
-    figname = label + '_rwgt_' + name + '.pdf'
+    figname = label + name + '.png'
     fig.savefig(figname)
-    print("Histogram saved to:", figname)   
+    print("Histogram saved to:", figname)
     plt.close(fig)
 
 
-print("wc list: ", hists['njets']._wcnames)
-
 ###### Plot histograms ######
-for name in hists: 
-#    plot_hist_NOrwgt(hists, name, label)
-    plot_hist_sm(hists, name, label)
-#    plot_hist_rwgt(hists, name, label+'_ref', ref_pts)
+for name in hists:
+    plot_hist_NOrwgt(hists, name, label)
+#    plot_hist_sm(hists, name, label)
+#    plot_hist_rwgt(hists, name, label+"_orig_", orig_pts)
+#    plot_hist_rwgt(hists, name, label+"_halforig_", halforig_pts)
+#    plot_hist_rwgt(hists, name, label+"_qtorig_", qtorig_pts)
+#    plot_hist_rwgt(hists, name, label+"_dblorig_", dblorig_pts)
 
