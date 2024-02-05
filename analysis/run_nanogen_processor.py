@@ -60,7 +60,7 @@ if __name__ == '__main__':
             port.append(port[0])
 
     if args.hist_list == ["weights"]:
-        hist_lst = ["weights_SM", "weights_SM_log"]
+        hist_lst = ["weights_SM", "weights_SM_log", "weights_pt1", "weights_pt1_log"]
     elif args.hist_list == ["kinematics"]:
         hist_lst == ["tops_pt", "ht", "jets_pt", "j0pt", "ntops", "njets", "nleps", "mtt", "mll"]
     else:

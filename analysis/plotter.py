@@ -16,7 +16,9 @@ params = {'axes.labelsize': 20,
           'legend.fontsize':20}
 plt.rcParams.update(params)
 
-fin = 'cfg_test.pkl.gz'
+fin = 'TT01j2l_weights.pkl.gz'
+#fin = 'weights_test.pkl.gz'
+#fin = 'cfg_test.pkl.gz'
 #fin = 'TT1j2l_cQj31.pkl.gz'
 #fin = "TT2j2l_cQj31.pkl.gz"
 #fin = "central_ttbarUL17.pkl.gz"
@@ -83,9 +85,9 @@ print(hists)
 def plot_hist_NOrwgt(hists, name, label):
     h = hists[name]
     fig, ax = plt.subplots(1,1) #create an axis for plotting
-    hist.plot1d(h, ax=ax, stack=True)
+    hist.plot1d(h, ax=ax, stack=False)
     ax.legend()
-    figname = label + name + '.png'
+    figname = label + ' ' + name + '.png'
     fig.savefig(figname)
     print("Histogram saved to:", figname)
     plt.close(fig)
