@@ -164,9 +164,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 "weight"    : event_weights[event_selection_mask],
                 "eft_coeff" : eft_coeffs_cut,
             }
-
-            print(fill_info, '\n\n\n\n')
-
+            
             hout[var_name].fill(**fill_info)
 
         return hout
