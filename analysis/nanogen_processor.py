@@ -33,15 +33,15 @@ def is_clean(obj_A, obj_B, drmin=0.4):
 
 # Main analysis processor
 class AnalysisProcessor(processor.ProcessorABC):
-    def __init__(self, samples, wc_names_lst=[], dtype=np.float32, do_errors=False):
+    def __init__(self, samples, wc_names_lst=[], hist_lst = None, dtype=np.float32, do_errors=False):
         self._samples = samples
         self._wc_names_lst = wc_names_lst
 
         self._dtype = dtype
         self._do_errors = do_errors
 
-        print("self._samples", self._samples)
-        print("self._wc_names_lst", self._wc_names_lst)
+        #print("self._samples", self._samples)
+        #print("self._wc_names_lst", self._wc_names_lst)
 
         # Create the histograms with new scikit hist
         self._histo_dict = {
@@ -55,6 +55,18 @@ class AnalysisProcessor(processor.ProcessorABC):
             "nleps"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
             "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
         }
+
+        # Set the list of hists to to fill
+        if hist_lst is None:
+            self._hist_lst = list(self._histo_dict.keys())
+        else:
+            for h in hist_lst:
+                if h not in self._histo_dict.keys():
+                    raise Exception(f"Error: Cannot specify hist \"{h}\", it is not defined in self._histo_dict")
+            self._hist_lst = hist_lst
+
+        print("hist_lst: ", self._hist_lst)
+
 
     @property
     def columns(self):
@@ -131,7 +143,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
         norm = (xsec/sow)
-        if eft_coeffs is None: 
+        if eft_coeffs is None:
             genw = events["genWeight"]
         else:
             genw = np.ones_like(events['event'])
@@ -148,7 +160,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             "nleps"     : nleps_cut,
             "mtt"       : mtt_cut,
             "ht"        : ht_cut,
-            "ntops"     : ntops_cut, 
+            "ntops"     : ntops_cut,
             "jets_pt"   : jets_pt_cut,
             "j0pt"      : ak.flatten(j0pt_cut),
             "mll"       : mll,
@@ -157,6 +169,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
 
         for var_name, var_values in variables_to_fill.items():
+            if var_name not in self._hist_lst:
+                print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
+                continue
 
             fill_info = {
                 var_name    : var_values,
@@ -164,7 +179,9 @@ class AnalysisProcessor(processor.ProcessorABC):
                 "weight"    : event_weights[event_selection_mask],
                 "eft_coeff" : eft_coeffs_cut,
             }
-            
+
+            print("fill info: ", fill_info)
+
             hout[var_name].fill(**fill_info)
 
         return hout
