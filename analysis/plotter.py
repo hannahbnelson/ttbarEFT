@@ -16,7 +16,8 @@ params = {'axes.labelsize': 20,
           'legend.fontsize':20}
 plt.rcParams.update(params)
 
-fin = 'TT01j2l_weights.pkl.gz'
+#fin = 'TT01j2l_weights_0602.pkl.gz'
+#fin = 'TT01j2l_weights.pkl.gz'
 #fin = 'weights_test.pkl.gz'
 #fin = 'cfg_test.pkl.gz'
 #fin = 'TT1j2l_cQj31.pkl.gz'
@@ -24,13 +25,8 @@ fin = 'TT01j2l_weights.pkl.gz'
 #fin = "central_ttbarUL17.pkl.gz"
 #fin = 'TT1j2l_RezaReweight.pkl.gz'
 
-if fin.endswith('.pkl.gz'):
-    label = fin[:-7]
-else:
-    label = fin
-print(label)
+flist = ['TT01j2l_S1_weights_0602.pkl.gz', 'TT01j2l_S2_weights_0602.pkl.gz', 'TT01j2l_S3_weights_0602.pkl.gz', 'TT01j2l_S4_weights_0602.pkl.gz', 'TT01j2l_S5_weights_0602.pkl.gz']
 
-hists = {}
 
 ###### Define different reweight points ######
 
@@ -64,8 +60,6 @@ dblorig_pts = {"ctGIm": 2.0, "ctGRe":1.4, "cQj38": 18.0, "cQj18": 14.0,
 #         else:
 #             hists[k]=hin[k]
 
-hists = utils.get_hist_from_pkl(fin, allow_empty=False)
-
 
 ###### Make list of reweight points in the same order as the wc list in the hist ######
 
@@ -78,16 +72,14 @@ def order_rwgt_pts(h,rwgt_dict):
 
     return rwgt_list
 
-print(hists)
-
 ###### Plotting Functions ######
 
 def plot_hist_NOrwgt(hists, name, label):
     h = hists[name]
     fig, ax = plt.subplots(1,1) #create an axis for plotting
-    hist.plot1d(h, ax=ax, stack=False)
+    hist.plot1d(h, ax=ax, stack=True)
     ax.legend()
-    figname = label + ' ' + name + '.png'
+    figname = label + '_' + name + '.png'
     fig.savefig(figname)
     print("Histogram saved to:", figname)
     plt.close(fig)
@@ -117,9 +109,21 @@ def plot_hist_rwgt(hists, name, label, rwgt_dict):
     plt.close(fig)
 
 
-###### Plot histograms ######
-for name in hists:
-    plot_hist_NOrwgt(hists, name, label)
+for fname in flist:
+    if fname.endswith('.pkl.gz'):
+        label = fname[:-7]
+    else:
+        label = fname
+    print(label)
+
+    hists = {}
+
+    hists = utils.get_hist_from_pkl(fname, allow_empty=False)
+    print(label, hists)
+
+    ###### Plot histograms ######
+    for name in hists:
+        plot_hist_NOrwgt(hists, name, label)
 #    plot_hist_sm(hists, name, label)
 #    plot_hist_rwgt(hists, name, label+"_orig_", orig_pts)
 #    plot_hist_rwgt(hists, name, label+"_halforig_", halforig_pts)

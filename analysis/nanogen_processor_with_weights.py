@@ -17,10 +17,35 @@ SM_pts = {"ctGIm": 0.0, "ctGRe":0.0, "cQj38": 0.0, "cQj18": 0.0,
           "ctd8": 0.0, "cQj31": 0.0, "cQj11": 0.0, "cQu1": 0.0,
           "cQd1": 0.0, "ctj1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
 
-pt1 = {'ctGIm': -0.5, 'ctGRe':-0.5, 'cQj38':3.0, 'cQj18':2.0,
+# Close to SM but not SM
+pt0 = {'ctGIm': 0.1, 'ctGRe':0.1, 'cQj38':0.5, 'cQj18':0.5,
+            'cQu8':0.5, 'cQd8':0.5, 'ctj8':0.5, 'ctu8':0.5,
+            'ctd8':0.5, 'cQj31':0.5, 'cQj11':0.5, 'cQu1':0.5,
+            'cQd1':0.5, 'ctj1':0.5, 'ctu1':0.5, 'ctd1':0.5}
+
+# Close to SM but ctG negative
+pt1 = {'ctGIm':- 0.1, 'ctGRe':-0.1, 'cQj38':0.5, 'cQj18':0.5,
+            'cQu8':0.5, 'cQd8':0.5, 'ctj8':0.5, 'ctu8':0.5,
+            'ctd8':0.5, 'cQj31':0.5, 'cQj11':0.5, 'cQu1':0.5,
+            'cQd1':0.5, 'ctj1':0.5, 'ctu1':0.5, 'ctd1':0.5}
+
+# Roughly half of the limits with have, ctG positive
+pt2 = {'ctGIm': 0.5, 'ctGRe':0.5, 'cQj38':3.0, 'cQj18':2.0,
             'cQu8':2.0, 'cQd8':4.0, 'ctj8':1.5, 'ctu8':2.2,
             'ctd8':4.0, 'cQj31':1.5, 'cQj11':1.5, 'cQu1':1.5,
             'cQd1':2.5, 'ctj1':1.4, 'ctu1':1.6, 'ctd1':2.5}
+
+# Roughly half of the limits we have, ctG negative
+pt3 = {'ctGIm': -0.5, 'ctGRe':-0.5, 'cQj38':3.0, 'cQj18':2.0,
+            'cQu8':2.0, 'cQd8':4.0, 'ctj8':1.5, 'ctu8':2.2,
+            'ctd8':4.0, 'cQj31':1.5, 'cQj11':1.5, 'cQu1':1.5,
+            'cQd1':2.5, 'ctj1':1.4, 'ctu1':1.6, 'ctd1':2.5}
+
+# Close to the limits we have, positive ctG
+pt4 = {'ctGIm': 1.0, 'ctGRe':1.0, 'cQj38':6.0, 'cQj18':5.0,
+            'cQu8':4.0, 'cQd8':9.0, 'ctj8':3.0, 'ctu8':4.5,
+            'ctd8':9.0, 'cQj31':3.0, 'cQj11':3.0, 'cQu1':3.0,
+            'cQd1':4.5, 'ctj1':2.5, 'ctu1':3.2, 'ctd1':4.5}
 
 # Get the lumi for the given year
 def get_lumi(year):
@@ -99,10 +124,18 @@ class AnalysisProcessor(processor.ProcessorABC):
             "mtt"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
             "nleps"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
             "mll"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
-            "weights_SM"    : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM", "event weight", 40, 0, 4)),
-            "weights_SM_log" : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM_log", "log(event weight)", 80, -6, 2)),
-            "weights_pt1"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1", "event weight", 40, 0, 4)),
-            "weights_pt1_log" : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1_log", "log(event weight)", 110, -8, 3)),
+            "weights_SM"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM", "event weight", 30, 0, 3)),
+            "weights_SM_log"    : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt0"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt0", "event weight", 30, 0, 3)),
+            "weights_pt0_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt0_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt1"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1", "event weight", 30, 0, 3)),
+            "weights_pt1_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt2"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt2", "event weight", 30, 0, 3)),
+            "weights_pt2_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt2_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt3"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt3", "event weight", 30, 0, 3)),
+            "weights_pt3_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt3_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt4"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4", "event weight", 30, 0, 3)),
+            "weights_pt4_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4_log", "log(event weight)", 80, -6, 2)),
         }
 
         # Set the list of hists to to fill
@@ -236,17 +269,34 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         ######## Fill event weight histos ########
         wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
-        event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
+        wc_lst_pt0 = order_wc_values(self._wc_names_lst, pt0)
         wc_lst_pt1 = order_wc_values(self._wc_names_lst, pt1)
+        wc_lst_pt2 = order_wc_values(self._wc_names_lst, pt2)
+        wc_lst_pt3 = order_wc_values(self._wc_names_lst, pt3)
+        wc_lst_pt4 = order_wc_values(self._wc_names_lst, pt4)
+
+        event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
+        event_weights_pt0 = calc_event_weights(eft_coeffs_cut, wc_lst_pt0)
         event_weights_pt1 = calc_event_weights(eft_coeffs_cut, wc_lst_pt1)
+        event_weights_pt2 = calc_event_weights(eft_coeffs_cut, wc_lst_pt2)
+        event_weights_pt3 = calc_event_weights(eft_coeffs_cut, wc_lst_pt3)
+        event_weights_pt4 = calc_event_weights(eft_coeffs_cut, wc_lst_pt4)
 
         weights_hist = np.ones_like(event_weights_SM)
 
         weights_to_fill = {
             "weights_SM"        : event_weights_SM,
             "weights_SM_log"    : np.log10(event_weights_SM),
+            "weights_pt0"       : event_weights_pt0,
+            "weights_pt0_log"   : np.log10(event_weights_pt0),
             "weights_pt1"       : event_weights_pt1,
-            "weights_pt1_log"   : np.log10(event_weights_pt1)
+            "weights_pt1_log"   : np.log10(event_weights_pt1),
+            "weights_pt2"       : event_weights_pt2,
+            "weights_pt2_log"   : np.log10(event_weights_pt2),
+            "weights_pt3"       : event_weights_pt3,
+            "weights_pt3_log"   : np.log10(event_weights_pt3),
+            "weights_pt4"       : event_weights_pt4,
+            "weights_pt4_log"   : np.log10(event_weights_pt4),
         }
 
         for var_name, var_val in weights_to_fill.items():

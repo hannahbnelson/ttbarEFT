@@ -13,7 +13,7 @@ from coffea.nanoevents import NanoAODSchema
 from topcoffea.modules import utils
 import topcoffea.modules.remote_environment as remote_environment
 
-import nanogen_processor_with_weights as nanogen_processor
+import nanogen_processor_with_weights
 
 LST_OF_KNOWN_EXECUTORS = ["futures","work_queue"]
 
@@ -60,7 +60,12 @@ if __name__ == '__main__':
             port.append(port[0])
 
     if args.hist_list == ["weights"]:
-        hist_lst = ["weights_SM", "weights_SM_log", "weights_pt1", "weights_pt1_log"]
+        hist_lst = ["weights_SM", "weights_SM_log", 
+                    "weights_pt0", "weights_pt0_log", 
+                    "weights_pt1", "weights_pt1_log", 
+                    "weights_pt2", "weights_pt2_log", 
+                    "weights_pt3", "weights_pt3_log", 
+                    "weights_pt4", "weights_pt4_log"]
     elif args.hist_list == ["kinematics"]:
         hist_lst == ["tops_pt", "ht", "jets_pt", "j0pt", "ntops", "njets", "nleps", "mtt", "mll"]
     else:
@@ -148,7 +153,7 @@ if __name__ == '__main__':
     wc_lst = wc_lst
 
     # Run the processor and get the output
-    processor_instance = nanogen_processor.AnalysisProcessor(samplesdict,wc_lst,hist_lst)
+    processor_instance = nanogen_processor_with_weights.AnalysisProcessor(samplesdict,wc_lst,hist_lst)
 
     if executor == "work_queue":
         executor_args = {
