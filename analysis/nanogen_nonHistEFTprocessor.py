@@ -20,10 +20,40 @@ import logging
 ##### User Inputs  #####
 ########################
 
+'''
+# dim6top ctG test
+SM_pts = {"ctG":0.0, "cQq83": 0.0, "cQq81": 0.0,
+          "cQu8": 0.0, "cQd8": 0.0, "ctq8": 0.0, "ctu8": 0.0,
+          "ctd8": 0.0, "cQq13": 0.0, "cQq11": 0.0, "cQu1": 0.0,
+          "cQd1": 0.0, "ctq1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+ctGp1_pts = {"ctG":1.2, "cQq83": 0.0, "cQq81": 0.0,
+          "cQu8": 0.0, "cQd8": 0.0, "ctq8": 0.0, "ctu8": 0.0,
+          "ctd8": 0.0, "cQq13": 0.0, "cQq11": 0.0, "cQu1": 0.0,
+          "cQd1": 0.0, "ctq1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+ctGm1_pts = {"ctG":-1.2, "cQq83": 0.0, "cQq81": 0.0,
+          "cQu8": 0.0, "cQd8": 0.0, "ctq8": 0.0, "ctu8": 0.0,
+          "ctd8": 0.0, "cQq13": 0.0, "cQq11": 0.0, "cQu1": 0.0,
+          "cQd1": 0.0, "ctq1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+# ctG test
+
 SM_pts = {"ctGIm": 0.0, "ctGRe":0.0, "cQj38": 0.0, "cQj18": 0.0,
           "cQu8": 0.0, "cQd8": 0.0, "ctj8": 0.0, "ctu8": 0.0,
           "ctd8": 0.0, "cQj31": 0.0, "cQj11": 0.0, "cQu1": 0.0,
           "cQd1": 0.0, "ctj1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+ctGp1_pts = {"ctGIm": 0.0, "ctGRe":1.2, "cQj38": 0.0, "cQj18": 0.0,
+            "cQu8": 0.0, "cQd8": 0.0, "ctj8": 0.0, "ctu8": 0.0,
+            "ctd8": 0.0, "cQj31": 0.0, "cQj11": 0.0, "cQu1": 0.0,
+            "cQd1": 0.0, "ctj1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+ctGm1_pts = {"ctGIm": 0.0, "ctGRe":-1.2, "cQj38": 0.0, "cQj18": 0.0,
+            "cQu8": 0.0, "cQd8": 0.0, "ctj8": 0.0, "ctu8": 0.0,
+            "ctd8": 0.0, "cQj31": 0.0, "cQj11": 0.0, "cQu1": 0.0,
+            "cQd1": 0.0, "ctj1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+# Reza Starting Points
 
 orig_pts = {"ctGIm": 1.0, "ctGRe":0.7, "cQj38": 9.0, "cQj18": 7.0,
                 "cQu8": 9.5, "cQd8": 12.0, "ctj8": 7.0, "ctu8": 9.0,
@@ -44,6 +74,32 @@ dblorig_pts = {"ctGIm": 2.0, "ctGRe":1.4, "cQj38": 18.0, "cQj18": 14.0,
                 "cQu8": 19.0, "cQd8": 24.0, "ctj8": 14.0, "ctu8": 18.0,
                 "ctd8": 24.8, "cQj31": 6.0, "cQj11": 8.4, "cQu1": 11.0,
                 "cQd1": 14.0, "ctj1": 8.8, "ctu1": 10.8, "ctd1": 14.0}
+'''
+
+SM_pts = {"ctGIm": 0.0, "ctGRe":0.0, "cQj38": 0.0, "cQj18": 0.0,
+          "cQu8": 0.0, "cQd8": 0.0, "ctj8": 0.0, "ctu8": 0.0,
+          "ctd8": 0.0, "cQj31": 0.0, "cQj11": 0.0, "cQu1": 0.0,
+          "cQd1": 0.0, "ctj1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+orig_pts = {"ctGIm": 1.0, "ctGRe":1.0, "cQj38": 3.0, "cQj18": 3.0,
+            "cQu8": 3.0, "cQd8": 3.0, "ctj8": 3.0, "ctu8": 3.0,
+            "ctd8": 3.0, "cQj31": 3.0, "cQj11": 3.0, "cQu1": 3.0,
+            "cQd1": 3.0, "ctj1": 3.0, "ctu1": 3.0, "ctd1": 3.0}
+
+qtorig_pts = {"ctGIm": 0.25, "ctGRe":0.25, "cQj38": 0.75, "cQj18": 0.75,
+            "cQu8": 0.75, "cQd8":0.75, "ctj8": 0.75, "ctu8": 0.75,
+            "ctd8": 0.75, "cQj31": 0.75, "cQj11": 0.75, "cQu1": 0.75,
+            "cQd1": 0.75, "ctj1": 0.75, "ctu1": 0.75, "ctd1": 0.75}
+
+halforig_pts = {"ctGIm": 0.5, "ctGRe":0.5, "cQj38": 1.5, "cQj18": 1.5,
+            "cQu8": 1.5, "cQd8": 1.5, "ctj8": 1.5, "ctu8": 1.5,
+            "ctd8": 1.5, "cQj31": 1.5, "cQj11": 1.5, "cQu1": 1.5,
+            "cQd1": 1.5, "ctj1": 1.5, "ctu1": 1.5, "ctd1": 1.5}
+
+dblorig_pts = {"ctGIm": 2.0, "ctGRe":2.0, "cQj38": 6.0, "cQj18": 6.0,
+            "cQu8": 6.0, "cQd8": 6.0, "ctj8": 6.0, "ctu8": 6.0,
+            "ctd8": 6.0, "cQj31": 6.0, "cQj11": 6.0, "cQu1": 6.0,
+            "cQd1": 6.0, "ctj1": 6.0, "ctu1": 6.0, "ctd1": 6.0}
 
 
 ################################
@@ -111,7 +167,7 @@ def calc_event_weights(eft_coeffs, wc_vals):
 ###################################
 
 class AnalysisProcessor(processor.ProcessorABC):
-    def __init__(self, samples, wc_names_lst=[], dtype=np.float32, do_errors=False):
+    def __init__(self, samples, wc_names_lst=[], hist_lst = None, dtype=np.float32, do_errors=False):
         self._samples = samples
         self._wc_names_lst = wc_names_lst
 
@@ -123,18 +179,30 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Create the histograms with new scikit hist
         self._histo_dict = {
-            "weights_orig"          : Hist(hist.axis.Regular(bins = 20, start = 0, stop = 3, name="event weight")), 
-            "weights_orig_log"      : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
-            "weights_SM"            : Hist(hist.axis.Regular(bins = 20, start = 0, stop = 4, name="event weight")), 
-            "weights_SM_log"        : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
-            "weights_halforig"      : Hist(hist.axis.Regular(bins = 50, start = 0, stop = 3, name="event weight")),
-            "weights_halforig_log"  : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
-            "weights_qtorig"        : Hist(hist.axis.Regular(bins = 20, start = 0, stop = 3, name="event weight")),
-            "weights_qtorig_log"    : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
-            "weights_dblorig"       : Hist(hist.axis.Regular(bins = 40, start = 0, stop = 8, name="event weight")),
-            "weights_dblorig_log"   : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
-            "deltaR"                : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="deltaR"))
+            #"weights_orig"          : Hist(hist.axis.Regular(bins = 20, start = 0, stop = 3, name="event weight")),
+            #"weights_orig_log"      : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
+            # "weights_SM"            : Hist(hist.axis.Regular(bins = 20, start = 0, stop = 4, name="event weight")),
+            # "weights_SM_log"        : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
+            #"weights_halforig"      : Hist(hist.axis.Regular(bins = 50, start = 0, stop = 3, name="event weight")),
+            #"weights_halforig_log"  : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
+            #"weights_qtorig"        : Hist(hist.axis.Regular(bins = 20, start = 0, stop = 3, name="event weight")),
+            #"weights_qtorig_log"    : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
+            #"weights_dblorig"       : Hist(hist.axis.Regular(bins = 40, start = 0, stop = 8, name="event weight")),
+            #"weights_dblorig_log"   : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
+            #"deltaR"                : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="deltaR")),
+            "jet_flav"               : Hist(hist.axis.Regular(bins=25, start=0, stop=25, name="abs(jet flavor)"))
         }
+
+        # Set the list of hists to to fill
+        if hist_lst is None:
+            self._hist_lst = list(self._histo_dict.keys())
+        else:
+            for h in hist_lst:
+                if h not in self._histo_dict.keys():
+                    raise Exception(f"Error: Cannot specify hist \"{h}\", it is not defined in self._histo_dict")
+            self._hist_lst = hist_lst
+
+        print("hist_lst: ", self._hist_lst)
     
     @property
     def columns(self):
@@ -194,6 +262,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('2j', at_least_two_jets)
         event_selection_mask = selections.all('2l', '2j')
 
+        jet_flav = abs(jets_clean[event_selection_mask].partonFlavour)
+
+        '''
         leps_cut = leps[event_selection_mask]
         tops_pt_cut = gen_top.sum().pt[event_selection_mask]
         njets_cut = njets[event_selection_mask]
@@ -213,6 +284,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         for i in range(ak.max(njets)):
             dr_i = jets_clean[njets>=(i+1)][:,i].delta_r(leps_cut[njets>=(i+1)])
             dr.extend(ak.to_list(ak.flatten(dr_i, axis=None)))
+        '''
 
 
         ######## Histogram of event weights ########
@@ -221,45 +293,65 @@ class AnalysisProcessor(processor.ProcessorABC):
             eft_coeffs_cut = eft_coeffs[event_selection_mask]
 
         wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
-        wc_lst_orig = order_wc_values(self._wc_names_lst, orig_pts)
-        wc_lst_halforig = order_wc_values(self._wc_names_lst, halforig_pts)
-        wc_lst_qtorig = order_wc_values(self._wc_names_lst, qtorig_pts) 
-        wc_lst_dblorig = order_wc_values(self._wc_names_lst, dblorig_pts)
-        
+        #wc_lst_orig = order_wc_values(self._wc_names_lst, orig_pts)
+        #wc_lst_halforig = order_wc_values(self._wc_names_lst, halforig_pts)
+        #wc_lst_qtorig = order_wc_values(self._wc_names_lst, qtorig_pts)
+        #wc_lst_dblorig = order_wc_values(self._wc_names_lst, dblorig_pts)
+       
         event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
-        event_weights_orig = calc_event_weights(eft_coeffs_cut, wc_lst_orig)
-        event_weights_halforig = calc_event_weights(eft_coeffs_cut, wc_lst_halforig)
-        event_weights_qtorig = calc_event_weights(eft_coeffs_cut, wc_lst_qtorig)
-        event_weights_dblorig = calc_event_weights(eft_coeffs_cut, wc_lst_dblorig)
+        #event_weights_orig = calc_event_weights(eft_coeffs_cut, wc_lst_orig)
+        #event_weights_halforig = calc_event_weights(eft_coeffs_cut, wc_lst_halforig)
+        #event_weights_qtorig = calc_event_weights(eft_coeffs_cut, wc_lst_qtorig)
+        #event_weights_dblorig = calc_event_weights(eft_coeffs_cut, wc_lst_dblorig)
+        '''
 
-        print("\n\n")
-        print(np.max(event_weights_dblorig))
-        print("SM events = 0.0: ", sum(event_weights_SM==0.0))
-        print("orig events = 0.0: ", sum(event_weights_orig==0.0))
-        print("half orig events = 0.0: ", sum(event_weights_halforig==0.0))
-        print("qt orig events = 0.0: ", sum(event_weights_qtorig==0.0))
-        print("dbl orig events = 0.0: ", sum(event_weights_dblorig==0.0))
-        print("\n\n")
+        wc_lst_ctGp1 = order_wc_values(self._wc_names_lst, ctGp1_pts)
+        wc_lst_ctGm1 = order_wc_values(self._wc_names_lst, ctGm1_pts)
+        
+        event_weights_SM_raw = calc_event_weights(eft_coeffs, wc_lst_SM)
+        event_weights_ctGp1 = calc_event_weights(eft_coeffs, wc_lst_ctGp1)
+        event_weights_ctGm1 = calc_event_weights(eft_coeffs, wc_lst_ctGm1)
+
+        print(" \n \n")
+        #print("SM event weights", event_weights_SM)
+        print("Sum of SM event weights", np.sum(event_weights_SM_raw))
+        print("Sum of ctGp1 event weights", np.sum(event_weights_ctGp1))
+        print("Sum of ctGm1 event weights", np.sum(event_weights_ctGm1))
+        print("\n \n")
+
+        #print("\n\n")
+        #print(np.max(event_weights_dblorig))
+        #print("SM events = 0.0: ", sum(event_weights_SM==0.0))
+        #print("orig events = 0.0: ", sum(event_weights_orig==0.0))
+        #print("half orig events = 0.0: ", sum(event_weights_halforig==0.0))
+        #print("qt orig events = 0.0: ", sum(event_weights_qtorig==0.0))
+        #print("dbl orig events = 0.0: ", sum(event_weights_dblorig==0.0))
+        #print("\n\n")
+        '''
 
         ######## Fill histos ########
         hout = self._histo_dict
         variables_to_fill = {
-            "weights_orig"          : event_weights_orig,
-            "weights_orig_log"      : np.log10(event_weights_orig),
-            "weights_SM"            : event_weights_SM,
-            "weights_SM_log"        : np.log10(event_weights_SM),
-            "weights_halforig"      : event_weights_halforig,
-            "weights_halforig_log"  : np.log10(event_weights_halforig),
-            "weights_qtorig"        : event_weights_qtorig, 
-            "weights_qtorig_log"    : np.log10(event_weights_qtorig), 
-            "weights_dblorig"       : event_weights_dblorig,
-            "weights_dblorig_log"   : np.log10(event_weights_dblorig),
-            "deltaR"                : dr
+            #"weights_orig"          : event_weights_orig,
+            #"weights_orig_log"      : np.log10(event_weights_orig),
+            # "weights_SM"            : event_weights_SM,
+            # "weights_SM_log"        : np.log10(event_weights_SM),
+            #"weights_halforig"      : event_weights_halforig,
+            #"weights_halforig_log"  : np.log10(event_weights_halforig),
+            #"weights_qtorig"        : event_weights_qtorig,
+            #"weights_qtorig_log"    : np.log10(event_weights_qtorig),
+            #"weights_dblorig"       : event_weights_dblorig,
+            #"weights_dblorig_log"   : np.log10(event_weights_dblorig),
+            #"deltaR"                : dr,
+            "jet_flav"               : ak.flatten(jet_flav)
         }
 
         for var_name, var_values in variables_to_fill.items():
-            hout[var_name].fill(var_values)
+            if var_name not in self._hist_lst:
+                print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
+                continue
 
+            hout[var_name].fill(var_values)
 
         return hout
 
