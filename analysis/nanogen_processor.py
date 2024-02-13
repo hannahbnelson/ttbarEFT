@@ -40,8 +40,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._dtype = dtype
         self._do_errors = do_errors
 
-        #print("self._samples", self._samples)
-        #print("self._wc_names_lst", self._wc_names_lst)
+        print("\n\n")
+        print("self._samples", self._samples)
+        print("self._wc_names_lst", self._wc_names_lst)
+        print("\n\n")
 
         # Create the histograms with new scikit hist
         self._histo_dict = {
@@ -50,8 +52,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "jets_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
             "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
             "ntops"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
-            "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)), 
-            "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)), 
+            "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
+            "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
             "nleps"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
             "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
         }
@@ -137,12 +139,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         jets_pt_cut = jets_clean.sum().pt[event_selection_mask]
         j0pt_cut = j0.pt[event_selection_mask]
         mll = (leps_cut[:,0] + leps_cut[:,1]).mass
-        
+ 
         ######## Normalization ########
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        norm = (xsec/sow)
+        # norm = (xsec/sow)
+        norm = (1/sow)
         if eft_coeffs is None:
             genw = events["genWeight"]
         else:
@@ -180,7 +183,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 "eft_coeff" : eft_coeffs_cut,
             }
 
-            print("fill info: ", fill_info)
+            # print("\n\n fill info: ", fill_info, "\n\n")
 
             hout[var_name].fill(**fill_info)
 
@@ -189,4 +192,3 @@ class AnalysisProcessor(processor.ProcessorABC):
 
     def postprocess(self, accumulator):
         return accumulator
-
