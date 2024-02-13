@@ -1,0 +1,12 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "ttbar_SMEFT",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/dim6top/tt_LO_SMEFT/nanoGen_42.root"
+  ],
+  "nSumOfWeights": 1.0,
+  "isData": false
+}
