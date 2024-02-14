@@ -5,11 +5,12 @@
 __pycache__/*
 .cache/*
 
-# User generated files from runnign code
+# User generated files from running code
 analysis/*/wq-executor-tmp-*
 analysis/*/wq-*.summary
 analysis/*/envs
 analysis/*/histos
+analysis/*.png
 
 # Distribution / packaging
 *.egg
