@@ -40,36 +40,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._dtype = dtype
         self._do_errors = do_errors
 
-        print("\n\n")
-        print("self._samples", self._samples)
-        print("self._wc_names_lst", self._wc_names_lst)
-        print("\n\n")
-
-        # Create the histograms with new scikit hist
-        self._histo_dict = {
-            "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "pT of the sum of the tops", 50, 0, 1000)),
-            "ht"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
-            "jets_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
-            "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
-            "ntops"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
-            "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
-            "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
-            "nleps"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
-            "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
-            "sow"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow", "sum of weights", 1, 0, 2)),
-        }
-
-        # Set the list of hists to to fill
-        if hist_lst is None:
-            self._hist_lst = list(self._histo_dict.keys())
-        else:
-            for h in hist_lst:
-                if h not in self._histo_dict.keys():
-                    raise Exception(f"Error: Cannot specify hist \"{h}\", it is not defined in self._histo_dict")
-            self._hist_lst = hist_lst
-
-        print("hist_lst: ", self._hist_lst)
-
+        #print("self._samples", self._samples)
+        #print("self._wc_names_lst", self._wc_names_lst)
 
     @property
     def columns(self):
@@ -96,9 +68,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         is_final_mask = genpart.hasFlags(["fromHardProcess","isLastCopy"])
         ele  = genpart[is_final_mask & (abs(genpart.pdgId) == 11)]
         mu   = genpart[is_final_mask & (abs(genpart.pdgId) == 13)]
-
-        #ele = genpart[(abs(genpart.pdgId) == 11)]
-        #mu = genpart[(abs(genpart.pdgId) == 13)]
         jets = events.GenJet
 
         ######## Lep selection  ########
@@ -113,6 +82,25 @@ class AnalysisProcessor(processor.ProcessorABC):
         jets_clean = jets[is_clean(jets, leps, drmin=0.4)]
         ht = ak.sum(jets_clean.pt, axis=-1)
         j0 = jets_clean[ak.argmax(jets_clean.pt, axis=-1, keepdims=True)]
+
+        '''
+        print("\n\n GenJet parton flavor: ", events.GenJet.partonFlavour, "\n\n")
+        print("\n\n jets_clean fields", jets_clean.partonFlavour, "\n\n")
+
+        bjets = jets_clean[abs(jets_clean.partonFlavour)==5]
+        gluons = jets_clean[abs(jets_clean.partonFlavour)==21]
+        dquark = jets_clean[abs(jets_clean.partonFlavour)==1]
+        uquark = jets_clean[abs(jets_clean.partonFlavour)==2]
+        other_jets = jets_clean[(abs(jets_clean.partonFlavour)!=5) & (abs(jets_clean.partonFlavour)!=21) & (abs(jets_clean.partonFlavour)!=1) & (abs(jets_clean.partonFlavour)!=2)]
+        print("num of bjets: ", ak.sum(ak.num(bjets)))
+        print("num of gluons: ", ak.sum(ak.num(gluons)))
+        print("num of d quarks: ", ak.sum(ak.num(dquark)))
+        print("num of u quarks: ", ak.sum(ak.num(uquark)))
+        print("total number of jets: ", ak.sum(ak.num(jets_clean)))
+        print("num of other jets: ", ak.sum(ak.num(other_jets)))
+        print("flav or other_jets: ", other_jets.partonFlavour)
+        print("\n\n")
+        '''
 
         ######## Top selection ########
 
@@ -143,58 +131,21 @@ class AnalysisProcessor(processor.ProcessorABC):
         jets_pt_cut = jets_clean.sum().pt[event_selection_mask]
         j0pt_cut = j0.pt[event_selection_mask]
         mll = (leps_cut[:,0] + leps_cut[:,1]).mass
- 
-        ######## Normalization ########
 
-        # Normalize by (xsec/sow)
-        #lumi = 1000.0*get_lumi(year)
-        # norm = (xsec/sow)
-        norm = (1/sow)
-        if eft_coeffs is None:
-            genw = events["genWeight"]
-        else:
-            genw = np.ones_like(events['event'])
+        '''
+        bjets_cut = bjets[event_selection_mask]
+        gluons_cut = gluons[event_selection_mask]
+        print("\n\n bjets_cut num: ", ak.sum(ak.num(bjets_cut)))
+        print("gluons_cut num: ", ak.sum(ak.num(gluons_cut)))
+        print("\n\n")
+        '''
 
-        event_weights = norm*genw
+        eft_coeffs = eft_coeffs[event_selection_mask]
+        coeffs_quad = ak.sum(eft_coeffs, axis = 0)
+        print(coeffs_quad)
 
-        counts = np.ones_like(events['event'])[event_selection_mask]
 
-        ######## Fill histos ########
-
-        hout = self._histo_dict
-
-        variables_to_fill = {
-            "tops_pt"   : tops_pt_cut,
-            "njets"     : njets_cut,
-            "nleps"     : nleps_cut,
-            "mtt"       : mtt_cut,
-            "ht"        : ht_cut,
-            "ntops"     : ntops_cut,
-            "jets_pt"   : jets_pt_cut,
-            "j0pt"      : ak.flatten(j0pt_cut),
-            "mll"       : mll,
-            "sow"       : counts,
-        }
-
-        eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
-
-        for var_name, var_values in variables_to_fill.items():
-            if var_name not in self._hist_lst:
-                print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
-                continue
-
-            fill_info = {
-                var_name    : var_values,
-                "sample"    : hist_axis_name,
-                "weight"    : event_weights[event_selection_mask],
-                "eft_coeff" : eft_coeffs_cut,
-            }
-
-            # print("\n\n fill info: ", fill_info, "\n\n")
-
-            hout[var_name].fill(**fill_info)
-
-        return hout
+        return coeffs_quad
 
 
     def postprocess(self, accumulator):

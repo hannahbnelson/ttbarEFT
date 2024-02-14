@@ -190,7 +190,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             #"weights_dblorig"       : Hist(hist.axis.Regular(bins = 40, start = 0, stop = 8, name="event weight")),
             #"weights_dblorig_log"   : Hist(hist.axis.Regular(bins = 65, start = -10, stop = 3, name="log(event weight)")),
             #"deltaR"                : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="deltaR")),
-            "jet_flav"               : Hist(hist.axis.Regular(bins=25, start=0, stop=25, name="abs(jet flavor)"))
+            "jet_flav"               : Hist(hist.axis.Regular(bins=23, start=0, stop=23, name="abs(jet flavor)"))
         }
 
         # Set the list of hists to to fill
@@ -292,13 +292,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         if eft_coeffs is not None:
             eft_coeffs_cut = eft_coeffs[event_selection_mask]
 
-        wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
+        #wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
         #wc_lst_orig = order_wc_values(self._wc_names_lst, orig_pts)
         #wc_lst_halforig = order_wc_values(self._wc_names_lst, halforig_pts)
         #wc_lst_qtorig = order_wc_values(self._wc_names_lst, qtorig_pts)
         #wc_lst_dblorig = order_wc_values(self._wc_names_lst, dblorig_pts)
        
-        event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
+        #event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
         #event_weights_orig = calc_event_weights(eft_coeffs_cut, wc_lst_orig)
         #event_weights_halforig = calc_event_weights(eft_coeffs_cut, wc_lst_halforig)
         #event_weights_qtorig = calc_event_weights(eft_coeffs_cut, wc_lst_qtorig)
@@ -334,8 +334,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         variables_to_fill = {
             #"weights_orig"          : event_weights_orig,
             #"weights_orig_log"      : np.log10(event_weights_orig),
-            # "weights_SM"            : event_weights_SM,
-            # "weights_SM_log"        : np.log10(event_weights_SM),
+            #"weights_SM"            : event_weights_SM,
+            #"weights_SM_log"        : np.log10(event_weights_SM),
             #"weights_halforig"      : event_weights_halforig,
             #"weights_halforig_log"  : np.log10(event_weights_halforig),
             #"weights_qtorig"        : event_weights_qtorig,
