@@ -9,8 +9,10 @@ __pycache__/*
 analysis/*/wq-executor-tmp-*
 analysis/*/wq-*.summary
 analysis/*/envs
-analysis/*/histos
+analysis/hists/*
 analysis/*.png
+analysis/plots/*
+analysis/tmp*-tmp-*/
 
 # Distribution / packaging
 *.egg
