@@ -146,7 +146,7 @@ def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_range, wc_name
     plt.grid(True)
     figname = "quad_1d_"+wc_name+".png"
     fig.savefig(os.path.join(save_dir,figname))
-    print("plot saved to: ", figname)
+    print("plot saved to: ", os.path.join(save_dir,figname))
     plt.close(fig)
 
 
@@ -187,6 +187,7 @@ if __name__ == '__main__':
     parser.add_argument('--wc-range', default = 1.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")
+    parser.add_argument('--html', action=store_true, help = "Make an html page for the save dir")
 
     args = parser.parse_args()
 
@@ -196,6 +197,7 @@ if __name__ == '__main__':
     wc_max = args.wc_range
     wc_name = args.wc_name
     save_dir_path = args.outpath
+    html_page = args.html
 
     # Get full list of possible wc names from the first file
     temp_hist = get_hist(files[0], hist_name)
@@ -211,12 +213,9 @@ if __name__ == '__main__':
     fname = "MgXS.txt"
     scatter_dict = get_points_from_txt(fname)
 
+    wc_range = np.arange(-wc_max, wc_max, 0.5)
+
     for wc in wc_list:
-        if wc == "ctGRe" or "ctGIm":
-            wc_range = np.arange(-1.0, 1.0, 0.25)
-       
-        else:
-            np.arange(-wc_max, wc_max, 0.5)
 
         scatter_xvals = scatter_dict[wc][0]
         scatter_yvals = np.divide(np.array(scatter_dict[wc][1]), 49.41)
@@ -224,8 +223,9 @@ if __name__ == '__main__':
         make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_range, wc, scatter_lst)
 
     # Make an index.html file if saving to web area
-    if "www" in save_dir_path:
-        make_html(save_dir_path)
+    if html_page:
+        if "www" in save_dir_path:
+            make_html(save_dir_path)
 
     # Loop through all wc in list and make a 1d quadratic plot for each
     # for wc in wc_list: 
