@@ -47,7 +47,9 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Create the histograms with new scikit hist
         self._histo_dict = {
-            "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "pT of the sum of the tops", 50, 0, 1000)),
+            "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "$p_T$ of the sum of the tops", 50, 0, 1000)),
+            "l0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("l0pt", "leading lepton $p_T$", 25, 0, 500)),
+            "dr_leps"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("dr_leps", "$\Delta R$ leptons", 30, 0, 6)),
             "ht"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
             "jets_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
             "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
@@ -56,7 +58,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
             "nleps"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
             "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
-            "sow"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow", "sum of weights", 1, 0, 2)),
+            "LHE_HT"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("LHE_HT", "LHE_HT", 50, 0, 1000)),
+            "LHE_HTIncoming": HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("LHE_HTIncoming", "LHE_HTIncoming", 50, 0, 1000)),
         }
 
         # Set the list of hists to to fill
@@ -96,7 +99,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         is_final_mask = genpart.hasFlags(["fromHardProcess","isLastCopy"])
         ele  = genpart[is_final_mask & (abs(genpart.pdgId) == 11)]
         mu   = genpart[is_final_mask & (abs(genpart.pdgId) == 13)]
-
         #ele = genpart[(abs(genpart.pdgId) == 11)]
         #mu = genpart[(abs(genpart.pdgId) == 13)]
         jets = events.GenJet
@@ -106,6 +108,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         e_selec = ((ele.pt>20) & (abs(ele.eta)<2.5))
         m_selec = ((mu.pt>20) & (abs(mu.eta)<2.5))
         leps = ak.concatenate([ele[e_selec],mu[m_selec]],axis=1)
+        leps = leps[ak.argsort(leps.pt, axis=-1, ascending=False)]
+        l0 = leps[ak.argmax(leps.pt, axis=-1, keepdims=True)]
 
         ######## Jet selection  ########
 
@@ -134,6 +138,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         event_selection_mask = selections.all('2l', '2j')
 
         leps_cut = leps[event_selection_mask]
+        dr_l0 = leps_cut[:,0]
+        dr_l1 = leps_cut[:,1]
+        l0pt_cut = l0.pt[event_selection_mask]
+        dr_cut = dr_l0.delta_r(dr_l1)
         tops_pt_cut = gen_top.sum().pt[event_selection_mask]
         njets_cut = njets[event_selection_mask]
         nleps_cut = nleps[event_selection_mask]
@@ -143,7 +151,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         jets_pt_cut = jets_clean.sum().pt[event_selection_mask]
         j0pt_cut = j0.pt[event_selection_mask]
         mll = (leps_cut[:,0] + leps_cut[:,1]).mass
- 
+        lhe_ht = events.LHE.HT[event_selection_mask]
+        lhe_htincoming = events.LHE.HTIncoming[event_selection_mask] 
+
         ######## Normalization ########
 
         # Normalize by (xsec/sow)
@@ -165,6 +175,8 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         variables_to_fill = {
             "tops_pt"   : tops_pt_cut,
+            "l0pt"      : ak.flatten(l0pt_cut),
+            "dr_leps"   : dr_cut,
             "njets"     : njets_cut,
             "nleps"     : nleps_cut,
             "mtt"       : mtt_cut,
@@ -173,7 +185,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "jets_pt"   : jets_pt_cut,
             "j0pt"      : ak.flatten(j0pt_cut),
             "mll"       : mll,
-            "sow"       : counts,
+            "LHE_HT"    : lhe_ht,
+            "LHE_HTIncoming" : lhe_htincoming
         }
 
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
