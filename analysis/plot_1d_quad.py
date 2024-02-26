@@ -105,7 +105,7 @@ def make_1d_quad_plot(files, hist_name, wc_range, wc_name):
     plt.close(fig)
 
 
-def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_range, wc_name, scatter_lst):
+def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_max, wc_name, scatter_lst):
     '''
     Make 1d quadratic plot of wc value versus total event weight
     Parameters
@@ -119,8 +119,10 @@ def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_range, wc_name
     wc_name : str
         single wc that will be scanned
     manual_lst : list 
-        [[x-values],[y-values]]
+        [[x-values],[y-values],[uncertainty on y-values]]
     '''
+
+    wc_range = np.arange(-wc_max, wc_max+0.5, 0.5)
     
     plot_vals = {}
 
@@ -134,15 +136,23 @@ def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_range, wc_name
         plot_vals[label] = weights
     
     fig, ax = plt.subplots()
-    for item in plot_vals:
-        ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
 
-    ax.scatter(scatter_lst[0], scatter_lst[1], label = "Dedicated")
+    ax.scatter(scatter_lst[0], scatter_lst[1], label = "Dedicated Point")
+    ax.errorbar(scatter_lst[0], scatter_lst[1], yerr = scatter_lst[2], xerr = None, capsize=5, ls='none')
+
+    for item in plot_vals:
+        if item == "LHCEFT_TT0j2l_Ref_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label=r"$t\bar{t}$ (Ref_main)")
+        elif item == "LHCEFT_TT0j2l_Ref2_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1],label=r"$t\bar{t}$ (Ref_test)")
+        else:
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
     
-    ax.legend()
+    ax.legend(loc = 'upper right', fontsize='medium')
     # ax.legend(loc=(1.04, 0.5))
-    ax.set_xlabel(wc_name)
-    ax.set_ylabel(r"$\sigma_{NP} /\ \sigma_{SM}$")
+    ax.set_xlim([-wc_max, wc_max])
+    ax.set_xlabel(wc_name, fontsize = 'medium')
+    ax.set_ylabel(r"$\sigma_{SMEFT} /\ \sigma_{SM}$", fontsize = 'medium')
     plt.grid(True)
     figname = "quad_1d_"+wc_name+".png"
     fig.savefig(os.path.join(save_dir,figname))
@@ -166,12 +176,14 @@ def get_points_from_txt(fname):
         name = first[0]
         xval = float([first[1]][0])
         yval = float([second[0]][0])
+        ysigma = float(second[1][:-3])
 
         if name not in dedicated.keys():
-            dedicated[name] = [[xval], [yval]]
+            dedicated[name] = [[xval], [yval], [ysigma]]
         else: 
             dedicated[name][0].append(xval)
             dedicated[name][1].append(yval)
+            dedicated[name][2].append(ysigma)   
         i += 2
 
     return dedicated
@@ -187,7 +199,7 @@ if __name__ == '__main__':
     parser.add_argument('--wc-range', default = 1.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")
-    parser.add_argument('--html', action=store_true, help = "Make an html page for the save dir")
+    parser.add_argument('--html', action='store_true', help = "Make an html page for the save dir")
 
     args = parser.parse_args()
 
@@ -216,11 +228,19 @@ if __name__ == '__main__':
     wc_range = np.arange(-wc_max, wc_max, 0.5)
 
     for wc in wc_list:
-
         scatter_xvals = scatter_dict[wc][0]
         scatter_yvals = np.divide(np.array(scatter_dict[wc][1]), 49.41)
-        scatter_lst = [scatter_xvals, scatter_yvals]
-        make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_range, wc, scatter_lst)
+        scatter_sigma = np.array(scatter_dict[wc][2])
+        const = 49.41
+        sigma_const = 0.3654
+        sigma_y= np.multiply(scatter_yvals, (np.sqrt(np.add(np.square(np.divide(scatter_sigma, scatter_dict[wc][1])),np.square(np.divide(sigma_const, const))))))
+
+        scatter_lst = [scatter_xvals, scatter_yvals, sigma_y]
+        if wc == 'ctGRe':
+            make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, 1.0, wc, scatter_lst)
+        else: 
+            make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_max, wc, scatter_lst)
+
 
     # Make an index.html file if saving to web area
     if html_page:

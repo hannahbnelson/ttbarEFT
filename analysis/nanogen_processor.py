@@ -47,9 +47,10 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Create the histograms with new scikit hist
         self._histo_dict = {
-            "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "$p_T$ of the sum of the tops", 50, 0, 1000)),
-            "l0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("l0pt", "leading lepton $p_T$", 25, 0, 500)),
-            "dr_leps"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("dr_leps", "$\Delta R$ leptons", 30, 0, 6)),
+            "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "$p_T$ of the sum of the tops", 40, 0, 800)),
+            "avg_top_pt"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("avg_top_pt", "average top $p_T$ [GeV]", 40, 0, 800)),
+            "l0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("l0pt", "leading lepton $p_T$ [GeV]", 20, 0, 400)),
+            "dr_leps"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("dr_leps", "$\Delta R$ (leading lepton, subleading lepton)", 30, 0, 6)),
             "ht"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
             "jets_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
             "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
@@ -142,7 +143,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         dr_l1 = leps_cut[:,1]
         l0pt_cut = l0.pt[event_selection_mask]
         dr_cut = dr_l0.delta_r(dr_l1)
+
         tops_pt_cut = gen_top.sum().pt[event_selection_mask]
+        avg_top_pt_cut = np.divide(tops_pt_cut, 2.0)
+
         njets_cut = njets[event_selection_mask]
         nleps_cut = nleps[event_selection_mask]
         mtt_cut = mtt[event_selection_mask]
@@ -159,7 +163,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
         # norm = (xsec/sow)
-        norm = (1/sow)
+        #norm = (1/sow)
+        norm = (1/200)
         if eft_coeffs is None:
             genw = events["genWeight"]
         else:
@@ -177,6 +182,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             "tops_pt"   : tops_pt_cut,
             "l0pt"      : ak.flatten(l0pt_cut),
             "dr_leps"   : dr_cut,
+            "avg_top_pt": avg_top_pt_cut,
             "njets"     : njets_cut,
             "nleps"     : nleps_cut,
             "mtt"       : mtt_cut,
