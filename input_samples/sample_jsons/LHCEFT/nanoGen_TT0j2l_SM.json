@@ -1,0 +1,18 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "tt (SM)",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1010.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1051.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1196.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1221.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1225.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1230.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_SM/nanoGen_1241.root"
+  ],
+  "nSumOfWeights": 10795.97470474,
+  "isData": false
+}

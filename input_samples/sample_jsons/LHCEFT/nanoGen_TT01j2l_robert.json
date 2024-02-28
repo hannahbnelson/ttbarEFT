@@ -1,0 +1,15 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "tt+1 jet (Ref_test)",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_robert/nanoGen_1218.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_robert/nanoGen_1228.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_robert/nanoGen_1233.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_robert/nanoGen_1235.root"
+  ],
+  "nSumOfWeights": 10261.06415858,
+  "isData": false
+}
