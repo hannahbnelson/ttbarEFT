@@ -52,11 +52,19 @@ conda activate ttbarEFT-env
 ```
 
 # Run a job using work\_queue
-First, `cd` into `analysis`. Here you will find the `run_wq_processor.py` script. To run the script, do 
+First, `cd` into `analysis`. Here you will find the `run_processor.py` script. 
+This script can run over any processor that is in the `analysis` directory, and setup to be run over in the script. 
+To add a new processor, modify the `proc_options` variable at the beginning of the script, and add the option in line 75. 
+
+To run the script, run 
 ```
-python run_processor.py --outname OutputName <PathToInputFile>
+python run_processor.py --outname <OutputName> -p <ProcessorName (without .py)> <PathToInputFile> --hist-list name1 name2 name3 
 ```
-This creates the tasks, but you need to request some workers to execute them on distributed workers. 
+
+By default, nanogen_processor.py and the work_queue_excecutor are used. 
+Without specifying a --hist-list, all histograms in the processor are created. There are also some shortcut words for lists of histograms available, see inside the run script for these lists. 
+
+When using the work_queue excecutor, this script creates the tasks, but you need to request some workers to execute them on distributed workers. 
 
 ## Submit workers on glados
 Please note that the workers must be submitted from the same environment that you are running the run script from so open a new ssh session to `glados` and run these commands: 
@@ -67,20 +75,6 @@ condor_submit_workers -M ${USER}-workqueue-coffea -t 900 --cores 12 --memory 480
 ```
 
 The workers will terminate themselves after 15 minutes of inactivity. More details on the work queue executor can be found here.
-
-A full example of the workflow is: 
-```
-ssh glados
-unset PYTHONPATH
-conda activate ttbarEFT-env
-cd ttbarEFT/analysis
-python run_wq_nanogen_processor.py --outname wq_test ../input_samples/sample_jsons/nanoGen_vast_TT1j2l_cQj31/
-
-ssh glados
-unset PYTHONPATH
-conda activate ttbarEFT-env
-condor_submit_workers -M ${USER}-workqueue-coffea -t 900 --cores 12 --memory 48000 --disk 100000 10
-```
 
 You can monitor the status of the workers with `work_queue_status`. 
 
@@ -95,5 +89,5 @@ conda activate ttbarEFT-env
 
 The CRC says to limit the number of cores to 4 or less: 
 ```
-condor_submit_workers -M ${USER}-workqueue-coffea -t 900 --cores 4 --memory 48000 --disk 100000 10
+condor_submit_workers -M ${USER}-workqueue-coffea -t 900 --cores 4 --memory 48000 --disk 100000 <Number of Workers>
 ```
