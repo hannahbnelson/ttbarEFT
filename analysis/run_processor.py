@@ -21,7 +21,9 @@ proc_options = ["nanogen_processor",
                 "nanogen_eftcoeff",
                 "nanogen_processor_with_weights",
                 "nanogen_njets", 
-                "sow_processor"]
+                "sow_processor", 
+                "djr", 
+                "new_nanogen_processor"]
 
 
 if __name__ == '__main__':
@@ -68,6 +70,11 @@ if __name__ == '__main__':
         import nanogen_njets as nanogen_processor
     elif proc == "sow_processor":
         import sow_processor as nanogen_processor
+    elif proc == 'djr':
+        import djr as nanogen_processor
+    elif proc == 'new_nanogen_processor':
+        import new_nanogen_processor as nanogen_processor
+
 
     proc_file = proc+'.py'
     print("\n running with processor: ", proc_file, '\n')
