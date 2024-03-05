@@ -1,0 +1,11 @@
+{
+    "xsec": 831.76,
+    "year": "2017",
+    "treeName": "Events",
+    "histAxisName": "TTJets_noskim",
+    "options": "",
+    "WCnames": [],
+    "files": ["/project01/ndcms/hnelson2/mc_samples/central_UL/10C33CC0-846D-134B-99EA-F7E4200E9A48.root"],
+    "nSumOfWeights": 3.31459032e+10,
+    "isData": false
+}

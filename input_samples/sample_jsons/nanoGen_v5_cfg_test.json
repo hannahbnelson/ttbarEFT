@@ -1,0 +1,12 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TT01j2l_cfg_test",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v5_cfg_test/nanoGen_21.root" 
+  ],
+  "nSumOfWeights": 1.0,
+  "isData": false
+}

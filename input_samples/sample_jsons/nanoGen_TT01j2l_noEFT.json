@@ -1,0 +1,14 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TT01j2l_noEFT",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/mc_samples/mg_noEFT/nanoGen_TT01j2l/nanoGen_166.root",
+    "/project01/ndcms/hnelson2/mc_samples/mg_noEFT/nanoGen_TT01j2l/nanoGen_203.root",
+    "/project01/ndcms/hnelson2/mc_samples/mg_noEFT/nanoGen_TT01j2l/nanoGen_93.root"
+  ],
+  "nSumOfWeights": 44531.0,
+  "isData": false
+}

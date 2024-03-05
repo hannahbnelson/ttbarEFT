@@ -1,0 +1,21 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TT01j2l_cfg_test",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_11.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_12.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_15.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_1.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_2.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_3.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_4.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_5.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_7.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v6_cfg_test/nanoGen_8.root"
+  ],
+  "nSumOfWeights": 1.0,
+  "isData": false
+}

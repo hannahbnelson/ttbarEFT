@@ -1,0 +1,12 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TTJets_Dilep_mg_MLM",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/mc_samples/central_UL/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/06A4EF72-0F2D-694D-BCB4-E89D223C54E8.root" 
+  ],
+  "nSumOfWeights": 834208.8440423,
+  "isData": false
+}
