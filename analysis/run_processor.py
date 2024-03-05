@@ -23,7 +23,8 @@ proc_options = ["nanogen_processor",
                 "nanogen_njets", 
                 "sow_processor", 
                 "djr", 
-                "new_nanogen_processor"]
+                "new_nanogen_processor", 
+                "nanogen_jet_flav_processor"]
 
 
 if __name__ == '__main__':
@@ -74,6 +75,8 @@ if __name__ == '__main__':
         import djr as nanogen_processor
     elif proc == 'new_nanogen_processor':
         import new_nanogen_processor as nanogen_processor
+    elif proc == 'nanogen_jet_flav_processor':
+        import nanogen_jet_flav_processor as nanogen_processor
 
 
     proc_file = proc+'.py'
