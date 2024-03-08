@@ -100,6 +100,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         is_final_mask = genpart.hasFlags(["fromHardProcess","isLastCopy"])
         ele  = genpart[is_final_mask & (abs(genpart.pdgId) == 11)]
         mu   = genpart[is_final_mask & (abs(genpart.pdgId) == 13)]
+        nu_ele = genpart[is_final_mask & (abs(genpart.pdgId) == 12)]
+        nu_mu = genpart[is_final_mask & (abs(genpart.pdgId) == 14)]
+        nu = ak.concatenate([nu_ele,nu_mu],axis=1)
         #ele = genpart[(abs(genpart.pdgId) == 11)]
         #mu = genpart[(abs(genpart.pdgId) == 13)]
         jets = events.GenJet
@@ -115,7 +118,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         ######## Jet selection  ########
 
         jets = jets[(jets.pt>30) & (abs(jets.eta)<2.5)]
-        jets_clean = jets[is_clean(jets, leps, drmin=0.4)]
+        jets_clean = jets[is_clean(jets, leps, drmin=0.4) & is_clean(jets, nu, drmin=0.4)]
         ht = ak.sum(jets_clean.pt, axis=-1)
         j0 = jets_clean[ak.argmax(jets_clean.pt, axis=-1, keepdims=True)]
 
@@ -162,8 +165,8 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        # norm = (xsec/sow)
-        norm = (1/sow)
+        norm = (xsec/sow)
+        #norm = (1/sow)
         # norm = (1/200)
         if eft_coeffs is None:
             genw = events["genWeight"]
