@@ -67,7 +67,7 @@ def calc_weight_array(hist, wc_range, wc_name):
         
     return weight_pts
 
-def make_1d_quad_plot(files, hist_name, wc_range, wc_name):
+def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
     '''
     Make 1d quadratic plot of wc value versus total event weight
     Parameters
@@ -84,9 +84,11 @@ def make_1d_quad_plot(files, hist_name, wc_range, wc_name):
     
     plot_vals = {}
 
+    wc_range = np.arange(-wc_max, wc_max+0.5, 0.5)
+
     for fname in files: 
         if fname.endswith('.pkl.gz'):
-            label = fname[:-7]
+            label = fname[:10]
         else: 
             label = fname
         hist = get_hist(fname, hist_name)
@@ -94,14 +96,25 @@ def make_1d_quad_plot(files, hist_name, wc_range, wc_name):
         plot_vals[label] = weights
     
     fig, ax = plt.subplots()
+
+    max_val = 0
+
     for item in plot_vals:
         ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
+        new_val = max(plot_vals[item][1])
+        if new_val >= max_val:
+            max_val = new_val
 
-    ax.legend()
-    fig.suptitle(wc_name)
+    ax.legend(loc = 'upper right', fontsize='medium')
+    ax.set_xlim([-wc_max, wc_max])
+    # ax.set_ylim([0.8, max_val+0.5])
+    ax.set_xlabel(wc_name, fontsize = 'medium')
+    #ax.set_ylabel(r"$\sigma_{SMEFT} /\ \sigma_{SM}$", fontsize = 'medium')
+    ax.set_ylabel(r"$\sigma_{SMEFT}$", fontsize = 'medium')
+    plt.grid(True)
     figname = "quad_1d_"+wc_name+".png"
-    fig.savefig(figname)
-    print("plot saved to: ", figname)
+    fig.savefig(os.path.join(save_dir,figname))
+    print("plot saved to: ", os.path.join(save_dir,figname))
     plt.close(fig)
 
 
@@ -222,36 +235,30 @@ if __name__ == '__main__':
     else:
         wc_list = wc_name
 
-    fname = "MgXS.txt"
-    scatter_dict = get_points_from_txt(fname)
-
-    wc_range = np.arange(-wc_max, wc_max, 0.5)
+    # fname = "MgXS.txt"
+    # scatter_dict = get_points_from_txt(fname)
 
     for wc in wc_list:
-        scatter_xvals = scatter_dict[wc][0]
-        scatter_yvals = np.divide(np.array(scatter_dict[wc][1]), 49.41)
-        scatter_sigma = np.array(scatter_dict[wc][2])
-        const = 49.41
-        sigma_const = 0.3654
-        sigma_y= np.multiply(scatter_yvals, (np.sqrt(np.add(np.square(np.divide(scatter_sigma, scatter_dict[wc][1])),np.square(np.divide(sigma_const, const))))))
+        make_1d_quad_plot(files, save_dir_path, hist_name, wc_max, wc)
 
-        scatter_lst = [scatter_xvals, scatter_yvals, sigma_y]
-        if wc == 'ctGRe':
-            make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, 1.0, wc, scatter_lst)
-        else: 
-            make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_max, wc, scatter_lst)
+
+    # for wc in wc_list:
+    #     scatter_xvals = scatter_dict[wc][0]
+    #     scatter_yvals = np.divide(np.array(scatter_dict[wc][1]), 49.41)
+    #     scatter_sigma = np.array(scatter_dict[wc][2])
+    #     const = 49.41
+    #     sigma_const = 0.3654
+    #     sigma_y= np.multiply(scatter_yvals, (np.sqrt(np.add(np.square(np.divide(scatter_sigma, scatter_dict[wc][1])),np.square(np.divide(sigma_const, const))))))
+
+    #     scatter_lst = [scatter_xvals, scatter_yvals, sigma_y]
+    #     if wc == 'ctGRe':
+    #         make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, 1.0, wc, scatter_lst)
+    #     else: 
+    #         make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_max, wc, scatter_lst)
 
 
     # Make an index.html file if saving to web area
     if html_page:
         if "www" in save_dir_path:
             make_html(save_dir_path)
-
-    # Loop through all wc in list and make a 1d quadratic plot for each
-    # for wc in wc_list: 
-    #     make_1d_quad_plot(files, hist_name, wc_range, wc)
-
-
-
-
 

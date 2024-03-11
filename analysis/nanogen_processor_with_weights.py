@@ -113,29 +113,29 @@ class AnalysisProcessor(processor.ProcessorABC):
         #print("self._samples", self._samples)
         #print("self._wc_names_lst", self._wc_names_lst)
 
-        # Create the histograms with new scikit hist
+        # Create the histograms with HistEFT based on coffea.histt
         self._histo_dict = {
-            "tops_pt"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "pT of the sum of the tops", 50, 0, 1000)),
-            "ht"            : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
-            "jets_pt"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
-            "j0pt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
-            "ntops"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
-            "njets"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
-            "mtt"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
-            "nleps"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
-            "mll"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
+            # "tops_pt"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "pT of the sum of the tops", 50, 0, 1000)),
+            # "ht"            : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
+            # "jets_pt"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
+            # "j0pt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
+            # "ntops"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
+            # "njets"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
+            # "mtt"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
+            # "nleps"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
+            # "mll"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
             "weights_SM"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM", "event weight", 30, 0, 3)),
-            "weights_SM_log"    : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM_log", "log(event weight)", 80, -6, 2)),
+            "weights_SM_log"    : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_SM_log", "$log_{10}$(event weight)", 70, -6, 1)),
             "weights_pt0"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt0", "event weight", 30, 0, 3)),
-            "weights_pt0_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt0_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt0_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt0_log", "$log_{10}$(event weight)", 70, -6, 1)),
             "weights_pt1"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1", "event weight", 30, 0, 3)),
-            "weights_pt1_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt1_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt1_log", "$log_{10}$(event weight)", 70, -6, 1)),
             "weights_pt2"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt2", "event weight", 30, 0, 3)),
-            "weights_pt2_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt2_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt2_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt2_log", "$log_{10}$(event weight)", 70, -6, 1)),
             "weights_pt3"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt3", "event weight", 30, 0, 3)),
-            "weights_pt3_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt3_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt3_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt3_log", "$log_{10}$(event weight)", 70, -6, 1)),
             "weights_pt4"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4", "event weight", 30, 0, 3)),
-            "weights_pt4_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4_log", "log(event weight)", 80, -6, 2)),
+            "weights_pt4_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4_log", "$log_{10}$(event weight)", 80, -6, 2)),
         }
 
         # Set the list of hists to to fill
@@ -224,7 +224,8 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        norm = (xsec/sow)
+        # norm = (xsec/sow)
+        norm = (1/sow)
         if eft_coeffs is None:
             genw = events["genWeight"]
         else:
@@ -232,39 +233,39 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         event_weights = norm*genw
 
-        ######## Fill histos ########
+        # ######## Fill histos ########
 
         hout = self._histo_dict
 
-        variables_to_fill = {
-            "tops_pt"   : tops_pt_cut,
-            "njets"     : njets_cut,
-            "nleps"     : nleps_cut,
-            "mtt"       : mtt_cut,
-            "ht"        : ht_cut,
-            "ntops"     : ntops_cut,
-            "jets_pt"   : jets_pt_cut,
-            "j0pt"      : ak.flatten(j0pt_cut),
-            "mll"       : mll,
-        }
+        # variables_to_fill = {
+        #     "tops_pt"   : tops_pt_cut,
+        #     "njets"     : njets_cut,
+        #     "nleps"     : nleps_cut,
+        #     "mtt"       : mtt_cut,
+        #     "ht"        : ht_cut,
+        #     "ntops"     : ntops_cut,
+        #     "jets_pt"   : jets_pt_cut,
+        #     "j0pt"      : ak.flatten(j0pt_cut),
+        #     "mll"       : mll,
+        # }
 
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
 
-        for var_name, var_values in variables_to_fill.items():
-            if var_name not in self._hist_lst:
-                print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
-                continue
+        # for var_name, var_values in variables_to_fill.items():
+        #     if var_name not in self._hist_lst:
+        #         print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
+        #         continue
 
-            fill_info = {
-                var_name    : var_values,
-                "sample"    : hist_axis_name,
-                "weight"    : event_weights[event_selection_mask],
-                "eft_coeff" : eft_coeffs_cut,
-            }
+        #     fill_info = {
+        #         var_name    : var_values,
+        #         "sample"    : hist_axis_name,
+        #         "weight"    : event_weights[event_selection_mask],
+        #         "eft_coeff" : eft_coeffs_cut,
+        #     }
 
-            print("fill info: ", fill_info)
+        #     print("fill info: ", fill_info)
 
-            hout[var_name].fill(**fill_info)
+        #     hout[var_name].fill(**fill_info)
 
 
         ######## Fill event weight histos ########
@@ -308,7 +309,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 var_name    : var_val,
                 "sample"    : hist_axis_name,
                 "weight"    : weights_hist,
-                "eft_coeff" : None
+                "eft_coeff" : None,
             }
 
             hout[var_name].fill(**fill_info_weights)

@@ -166,7 +166,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
         norm = (xsec/sow)
-        #norm = (1/sow)
+        # norm = (1/sow)
         # norm = (1/200)
         if eft_coeffs is None:
             genw = events["genWeight"]

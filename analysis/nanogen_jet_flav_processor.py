@@ -43,6 +43,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Create the histograms with new scikit hist
         self._histo_dict = {
             "jet_flav"     : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jet_flav", "pdgID jet flavor", 23, 0, 23)),
+            "njets_0p"     : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets_0p", "njets", 10, 0, 10)), 
+            "njets_1p"     : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets_1p", "njets", 10, 0, 10)),
+            "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
         }
 
         # Set the list of hists to to fill
@@ -149,7 +152,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
         # norm = (xsec/sow)
-        norm = (1/sow)
+        # norm = (1/sow)
         # norm = (1/200)
 
         if eft_coeffs is None:
@@ -157,21 +160,27 @@ class AnalysisProcessor(processor.ProcessorABC):
         else:
             genw = np.ones_like(events['event'])
 
-        event_weights = genw*norm
+        event_weights = genw
+
+        eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
+
+
+        njets_cut = ak.num(jets_clean[event_selection_mask])
 
 
         # Jet Flavor
         jet_flav = abs(jets_clean[event_selection_mask].partonFlavour)
-        njets = ak.num(jets_clean[event_selection_mask])
-        jet_flav_eft = np.repeat(eft_coeffs[event_selection_mask], njets, axis=0)
-        jet_flav_weight = np.repeat(event_weights[event_selection_mask], njets, axis=0)
+        jet_flav_eft = np.repeat(eft_coeffs[event_selection_mask], njets_cut, axis=0)
+        jet_flav_weight = np.repeat(event_weights[event_selection_mask], njets_cut, axis=0)
 
+        nMEPartons = events.Generator.nMEPartonsFiltered[event_selection_mask]
+        njets_0p = njets_cut[nMEPartons == 0]
+        njets_1p = njets_cut[nMEPartons == 1]
 
         ######## Fill histos ########
 
         hout = self._histo_dict
 
-        print(f"Filling jet_flav hist")
         jet_flav_fill_info = {
             "jet_flav"  : ak.flatten(jet_flav), 
             "sample"    : hist_axis_name, 
@@ -179,9 +188,32 @@ class AnalysisProcessor(processor.ProcessorABC):
             "eft_coeff" : jet_flav_eft,
         }
 
-        hout["jet_flav"].fill(**jet_flav_fill_info)
+        njets_fill_info = {
+            "njets"     : njets_cut,
+            "sample"    : hist_axis_name,
+            "weight"    : event_weights[event_selection_mask],
+            "eft_coeff" : eft_coeffs_cut,
+        }
 
-        print("\n\n")
+        njets_0p_fill_info = {
+            "njets_0p"  : njets_0p,
+            "sample"    : hist_axis_name,
+            "weight"    : event_weights[event_selection_mask][nMEPartons == 0],
+            "eft_coeff" : eft_coeffs_cut[nMEPartons == 0],
+        }
+
+        njets_1p_fill_info = {
+            "njets_1p"  : njets_1p,
+            "sample"    : hist_axis_name,
+            "weight"    : event_weights[event_selection_mask][nMEPartons == 1],
+            "eft_coeff" : eft_coeffs_cut[nMEPartons == 1],
+        }
+
+        hout["jet_flav"].fill(**jet_flav_fill_info)
+        hout["njets"].fill(**njets_fill_info)
+        hout["njets_0p"].fill(**njets_0p_fill_info)
+        hout["njets_1p"].fill(**njets_1p_fill_info)
+
         
         return hout
 

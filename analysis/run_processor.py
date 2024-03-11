@@ -105,7 +105,7 @@ if __name__ == '__main__':
                     "weights_pt3", "weights_pt3_log",
                     "weights_pt4", "weights_pt4_log"]
     elif args.hist_list == ["kinematics"]:
-        hist_lst == ["tops_pt", "ht", "jets_pt", "j0pt", "ntops", "njets", "nleps", "mtt", "mll"]
+        hist_lst = ["tops_pt", "avg_top_pt", "l0pt", "dr_leps", "ht", "jets_pt", "j0pt", "ntops", "njets", "nleps", "mtt", "mll"]
     else:
         hist_lst = args.hist_list
 

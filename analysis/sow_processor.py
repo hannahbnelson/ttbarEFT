@@ -29,7 +29,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._do_errors = do_errors
 
         self._histo_dict = {
-        	"sow"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow", "sum of weights (normalized)", 1, 0, 2)),
+        	"sow"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow", "sum of weights", 1, 0, 2)),
+            "sow_norm"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow_norm", "sum of weights", 1, 0, 2)),
             "nevents"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nevents", "number of events", 1, 0, 2)),
             "njets"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
         }
@@ -70,6 +71,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         sow_fill_info = {
             "sow"       : counts, 
             "sample"    : hist_axis_name, 
+            "weight"    : wgts, 
+            "eft_coeff" : eft_coeffs,
+        }
+
+        sow_norm_fill_info = {
+            "sow_norm"  : counts, 
+            "sample"    : hist_axis_name, 
             "weight"    : wgts*(1/norm), 
             "eft_coeff" : eft_coeffs,
         }
@@ -91,6 +99,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         }
 
         hout["sow"].fill(**sow_fill_info)
+        hout["sow_norm"].fill(**sow_norm_fill_info)
         hout["nevents"].fill(**nevets_fill_info)
         hout["njets"].fill(**njets_fill_info)
 
