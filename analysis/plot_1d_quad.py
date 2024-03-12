@@ -208,11 +208,12 @@ def get_points_from_txt(fname):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Customize inputs')
     parser.add_argument('--files', '-f', action='extend', nargs='+', required = True, help = "Specify a list of pkl.gz to run over.")
-    parser.add_argument('--hist-name', default = 'sow', help = 'Which histogram to use')
+    parser.add_argument('--hist-name', default = 'sow_norm', help = 'Which histogram to use')
     parser.add_argument('--wc-range', default = 1.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")
     parser.add_argument('--html', action='store_true', help = "Make an html page for the save dir")
+    parser.add_argument('--scatter', action='store_true', help="Make quad plots with scatter plot overlay that is made with points from txt file")
 
     args = parser.parse_args()
 
@@ -223,6 +224,7 @@ if __name__ == '__main__':
     wc_name = args.wc_name
     save_dir_path = args.outpath
     html_page = args.html
+    scatter = args.scatter
 
     # Get full list of possible wc names from the first file
     temp_hist = get_hist(files[0], hist_name)
@@ -235,26 +237,26 @@ if __name__ == '__main__':
     else:
         wc_list = wc_name
 
-    # fname = "MgXS.txt"
-    # scatter_dict = get_points_from_txt(fname)
+    if scatter:
+        fname = "MgXS.txt"
+        scatter_dict = get_points_from_txt(fname)
 
-    for wc in wc_list:
-        make_1d_quad_plot(files, save_dir_path, hist_name, wc_max, wc)
+        for wc in wc_list:
+            scatter_xvals = scatter_dict[wc][0]
+            scatter_yvals = np.divide(np.array(scatter_dict[wc][1]), 49.41)
+            scatter_sigma = np.array(scatter_dict[wc][2])
+            const = 49.41
+            sigma_const = 0.3654
+            sigma_y= np.multiply(scatter_yvals, (np.sqrt(np.add(np.square(np.divide(scatter_sigma, scatter_dict[wc][1])),np.square(np.divide(sigma_const, const))))))
 
-
-    # for wc in wc_list:
-    #     scatter_xvals = scatter_dict[wc][0]
-    #     scatter_yvals = np.divide(np.array(scatter_dict[wc][1]), 49.41)
-    #     scatter_sigma = np.array(scatter_dict[wc][2])
-    #     const = 49.41
-    #     sigma_const = 0.3654
-    #     sigma_y= np.multiply(scatter_yvals, (np.sqrt(np.add(np.square(np.divide(scatter_sigma, scatter_dict[wc][1])),np.square(np.divide(sigma_const, const))))))
-
-    #     scatter_lst = [scatter_xvals, scatter_yvals, sigma_y]
-    #     if wc == 'ctGRe':
-    #         make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, 1.0, wc, scatter_lst)
-    #     else: 
-    #         make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_max, wc, scatter_lst)
+            scatter_lst = [scatter_xvals, scatter_yvals, sigma_y]
+            if wc == 'ctGRe':
+                make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, 1.0, wc, scatter_lst)
+            else: 
+                make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_max, wc, scatter_lst)
+    else:
+        for wc in wc_list:
+            make_1d_quad_plot(files, save_dir_path, hist_name, wc_max, wc)
 
 
     # Make an index.html file if saving to web area
