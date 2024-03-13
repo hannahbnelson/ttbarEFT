@@ -61,6 +61,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
             "LHE_HT"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("LHE_HT", "LHE_HT", 50, 0, 1000)),
             "LHE_HTIncoming": HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("LHE_HTIncoming", "LHE_HTIncoming", 50, 0, 1000)),
+            "sow"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow", "sum of weights", 1, 0, 2)),
         }
 
         # Set the list of hists to to fill
@@ -103,8 +104,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         nu_ele = genpart[is_final_mask & (abs(genpart.pdgId) == 12)]
         nu_mu = genpart[is_final_mask & (abs(genpart.pdgId) == 14)]
         nu = ak.concatenate([nu_ele,nu_mu],axis=1)
-        #ele = genpart[(abs(genpart.pdgId) == 11)]
-        #mu = genpart[(abs(genpart.pdgId) == 13)]
         jets = events.GenJet
 
         ######## Lep selection  ########
@@ -165,9 +164,10 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        norm = (xsec/sow)
-        # norm = (1/sow)
+        # norm = (xsec/sow)
+        norm = (1/sow)
         # norm = (1/200)
+        # norm = 1
         if eft_coeffs is None:
             genw = events["genWeight"]
         else:
@@ -195,7 +195,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "j0pt"      : ak.flatten(j0pt_cut),
             "mll"       : mll,
             "LHE_HT"    : lhe_ht,
-            "LHE_HTIncoming" : lhe_htincoming
+            "LHE_HTIncoming" : lhe_htincoming, 
+            "sow"       : counts,
         }
 
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None

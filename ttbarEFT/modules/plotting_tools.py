@@ -20,13 +20,13 @@ plt.rcParams.update(params)
 
 def save_fig_as_png(fig, figname):
 	fig.savefig(figname+'.png')
-	print("figure saved to: ", figname)
+	print("figure saved to: ", figname+'.png')
 
 def save_fig_as_pdf(fig, figname):
 	fig.savefig(figname+'.pdf')
-	print("figure saved to: ", figname)
+	print("figure saved to: ", figname+'.pdf')
 
-def make_single_histo(histo, loc='upper right', fontsize='medium', title=None):
+def plot_single_histo(histo, loc='upper right', fontsize='small', title=None):
 	
 	fig, ax = plt.subplots(1,1)
 	hist.plot1d(histo, ax=ax, stack=False, clear=False)
@@ -37,42 +37,39 @@ def make_single_histo(histo, loc='upper right', fontsize='medium', title=None):
 
 	return fig
 
-def save_single_histo(hists, name, label, loc='upper right', fontsize='medium', title=None):
+def make_single_histo(hists, name, label, loc='upper right', fontsize='small', title=None):
 	# HistEFT based on coffea
 
-	histo = hists[name]
+    histo = hists[name]
+    fig = plot_single_histo(histo, loc, fontsize, title)
+    figname = label+'_'+name
+    save_fig_as_png(fig, figname)
 
-	fig = make_single_histo(histo, loc, fontsize, title)
-	figname = label+'_'+name+'.png'
-	fig.savefig(figname)
-	print("figure saved to: ", figname)
-	plt.close(fig)
+	# fig = plot_single_histo(histo, loc, fontsize, title)
+	# figname = label+'_'+name+'.png'
+	# fig.savefig(figname)
+	# print("figure saved to: ", figname)
+	# plt.close(fig)
 
-
-def save_sm_histo(hists, name, label, loc='upper right', fontsize='medium'):
+def make_sm_histo(hists, name, label, loc='upper right', fontsize='small'):
 	# HistEFT based on coffea
 
 	histo = hists[name]
 	histo.set_sm()
-
-	fig = make_single_histo(histo, loc, fontsize)
-	figname = label+'_SMrwgt_'+name+'.png'
-	fig.savefig(figname)
-	print("figure saved to: ", figname)
-	plt.close(fig)
+	fig = plot_single_histo(histo, loc, fontsize)
+	figname = label+'_SMrwgt_'+name
+	save_fig_as_png(fig, figname)
 
 
-def save_rwgt_histo(hists, name, label, rwgt_dict, loc='upper right', fontsize='medium'):
+def make_rwgt_histo(hists, name, label, rwgt_dict, loc='upper right', fontsize='small'):
 	# HistEFT based on coffea
 
 	histo = hists[name]
 	histo.set_wilson_coefficients(**rwgt_dict)
+	fig = plot_single_histo(histo, loc, fontsize)
+	figname = label+'_rwgt_'+name
+	save_fig_as_png(fig, figname)
 
-	fig = make_single_histo(histo, loc, fontsize)
-	figname = label+'_rwgt_'+name+'.png'
-	fig.savefig(figname)
-	print("figure saved to: ", figname)
-	plt.close(fig)
 
 def make_djr01_plot(hists, label):
 
@@ -93,9 +90,7 @@ def make_djr01_plot(hists, label):
 	ax.set_xlabel(r"DJR 0 $\rightarrow$ 1")
 	ax.legend(["Total", "0 partons", "1 parton"])
 
-	figname = label+'_djr01.png'
-	fig.savefig(figname)
-	print("figure saved to: ", figname)
-	plt.close(fig)
+	figname = label+'_djr01'
+	save_fig_as_png(fig, figname)
 
 

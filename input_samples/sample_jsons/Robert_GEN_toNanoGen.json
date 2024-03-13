@@ -1,0 +1,31 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "Robert_GEN_toNanoGen",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_1.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_2.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_3.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_4.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_5.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_6.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_7.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_8.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_9.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_10.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_11.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_12.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_13.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_14.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_15.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_16.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_17.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_18.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_19.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/Robert_GEN_toNanoGen/nanoGen_20.root"
+  ],
+  "nSumOfWeights": 1.0,
+  "isData": false
+}
