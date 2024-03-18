@@ -56,6 +56,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
             "ntops"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
             "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
+            "njets_norm_before": HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets_norm_before", "njets", 10, 0, 10)),
+            "njets_norm_after" : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets_norm_after", "njets", 10, 0, 10)),
             "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 50, 0, 1000)),
             "nleps"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
             "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 50, 0, 1000)),
@@ -89,6 +91,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         year   = self._samples[dataset]['year']
         xsec   = self._samples[dataset]['xsec']
         sow    = self._samples[dataset]['nSumOfWeights']
+        sow_before_selec = self._samples[dataset]['nSumOfWeightsBeforeSelec']
+        sow_after_selec = self._samples[dataset]['nSumOfWeightsAfterSelec']
 
         # Extract the EFT quadratic coefficients and optionally use them to calculate the coefficients on the w**2 quartic function
         # eft_coeffs is never Jagged so convert immediately to numpy for ease of use.
@@ -164,8 +168,8 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        # norm = (xsec/sow)
-        norm = (1/sow)
+        norm = (xsec/sow)
+        # norm = (1/sow)
         # norm = (1/200)
         # norm = 1
         if eft_coeffs is None:
@@ -173,7 +177,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         else:
             genw = np.ones_like(events['event'])
 
-        event_weights = norm*genw
+        event_weights = genw
 
         counts = np.ones_like(events['event'])[event_selection_mask]
 
@@ -196,10 +200,11 @@ class AnalysisProcessor(processor.ProcessorABC):
             "mll"       : mll,
             "LHE_HT"    : lhe_ht,
             "LHE_HTIncoming" : lhe_htincoming, 
-            "sow"       : counts,
         }
 
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
+        event_weights_norm = event_weights*norm
+
 
         for var_name, var_values in variables_to_fill.items():
             if var_name not in self._hist_lst:
@@ -209,13 +214,41 @@ class AnalysisProcessor(processor.ProcessorABC):
             fill_info = {
                 var_name    : var_values,
                 "sample"    : hist_axis_name,
-                "weight"    : event_weights[event_selection_mask],
+                "weight"    : event_weights_norm[event_selection_mask],
                 "eft_coeff" : eft_coeffs_cut,
             }
 
-            # print("\n\n fill info: ", fill_info, "\n\n")
-
             hout[var_name].fill(**fill_info)
+
+
+        # Fill njets histograms with different normalization
+        event_weights_before = event_weights*(1/sow_before_selec)
+        event_weights_after = event_weights*(1/sow_after_selec)
+
+        sow_fill_info = {
+            "sow"       : counts,
+            "sample"    : hist_axis_name,
+            "weight"    : event_weights[event_selection_mask],
+            "eft_coeff" : eft_coeffs_cut,
+        }
+
+        njets_before_info = {
+            "njets_norm_before" : njets_cut,
+            "sample"    : hist_axis_name,
+            "weight"    : event_weights_before[event_selection_mask],
+            "eft_coeff" : eft_coeffs_cut,
+        }
+
+        njets_after_info = {
+            "njets_norm_after" : njets_cut,
+            "sample"    : hist_axis_name,
+            "weight"    : event_weights_after[event_selection_mask],
+            "eft_coeff" : eft_coeffs_cut,
+        }
+
+        hout["sow"].fill(**sow_fill_info)
+        hout["njets_norm_before"].fill(**njets_before_info)
+        hout["njets_norm_after"].fill(**njets_after_info)
 
         return hout
 
