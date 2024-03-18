@@ -1,0 +1,15 @@
+{
+  "xsec": 1.0,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "tt+0j",
+  "options": "",
+  "files": [
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v9_nominal/nanoGen_101.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v9_nominal/nanoGen_102.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v9_nominal/nanoGen_103.root",
+    "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v9_nominal/nanoGen_104.root"
+  ],
+  "nSumOfWeights": 5372.84148599,
+  "isData": false
+}
