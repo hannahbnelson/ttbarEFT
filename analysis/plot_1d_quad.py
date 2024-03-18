@@ -209,7 +209,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Customize inputs')
     parser.add_argument('--files', '-f', action='extend', nargs='+', required = True, help = "Specify a list of pkl.gz to run over.")
     parser.add_argument('--hist-name', default = 'sow_norm', help = 'Which histogram to use')
-    parser.add_argument('--wc-range', default = 1.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
+    parser.add_argument('--wc-range', default = 6.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")
     parser.add_argument('--html', action='store_true', help = "Make an html page for the save dir")
