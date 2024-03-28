@@ -210,7 +210,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # norm = (1/sow)
         # norm = 1.0
 
-        w2 = np.square(event_weights_SM*norm)
+        # w2 = np.square(event_weights_SM*norm)
 
         ######## Fill histos ########
         hout = self._histo_dict
