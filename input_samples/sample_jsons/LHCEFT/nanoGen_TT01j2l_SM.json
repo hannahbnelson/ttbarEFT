@@ -2,7 +2,7 @@
   "xsec": 1.0,
   "year": "2017",
   "treeName": "Events",
-  "histAxisName": "tt+1 jet (SM)",
+  "histAxisName": "tt+1 jet (SM sample)",
   "options": "",
   "files": [
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_SM/nanoGen_1217.root",

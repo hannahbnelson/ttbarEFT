@@ -8,7 +8,8 @@
     "/project01/ndcms/hnelson2/mc_samples/central_UL/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM/25C8DD83-C32E-D746-9049-98DAEDA73CF7.root",
     "/project01/ndcms/hnelson2/mc_samples/central_UL/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v1/NANOAODSIM/838E6251-D257-E54A-B82C-0BD681975B86.root" 
   ],
-  "nSumOfWeights_before_cuts": 1681144.0,
-  "nSumOfWeights": 339209.0,
+  "nSumOfWeightsBeforeSelec": 1681144.0,
+  "nSumOfWeightsAfterSelec" : 339209.0,
+  "nSumOfWeights": 1681144.0,
   "isData": false
 }

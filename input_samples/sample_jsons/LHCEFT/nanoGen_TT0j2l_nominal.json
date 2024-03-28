@@ -1,5 +1,5 @@
 {
-  "xsec": 1.0,
+  "xsec": 53.7284148599,
   "year": "2017",
   "treeName": "Events",
   "histAxisName": "tt+0j",
@@ -10,6 +10,8 @@
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v9_nominal/nanoGen_103.root",
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/v9_nominal/nanoGen_104.root"
   ],
+  "nSumOfWeightsBeforeSelec": 5372.84148599,
+  "nSumOfWeightsAfterSelec": 1085.02906981, 
   "nSumOfWeights": 5372.84148599,
   "isData": false
 }

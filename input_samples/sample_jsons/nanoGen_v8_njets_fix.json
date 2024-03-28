@@ -8,7 +8,8 @@
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/TT01j2l_S4_njets/nanoGen_101.root",
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/TT01j2l_S4_njets/nanoGen_102.root" 
   ],
-  "nSumOfWeights_before_cuts": 5416.60777692,
-  "nSumOfWeights":1167.76330903,
+  "nSumOfWeightsBeforeSelec": 5416.60777692,
+  "nSumOfWeightsAfterSelec": 1167.76330903, 
+  "nSumOfWeights":5416.60777692,
   "isData": false
 }

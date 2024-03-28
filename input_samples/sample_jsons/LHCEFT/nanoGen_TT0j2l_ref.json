@@ -2,7 +2,7 @@
   "xsec": 1.0,
   "year": "2017",
   "treeName": "Events",
-  "histAxisName": "tt (Ref_main)",
+  "histAxisName": "tt (sample 1)",
   "options": "",
   "files": [
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT0j2l_ref/nanoGen_1129.root",

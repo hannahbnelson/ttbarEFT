@@ -8,7 +8,8 @@
     "/project01/ndcms/hnelson2/mc_samples/central_UL/TTToDileptonic_TuneCP5_13TeV-madgraph-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM/3FA022DF-86DF-E64A-803D-5ADB4C9570A4.root",
     "/project01/ndcms/hnelson2/mc_samples/central_UL/TTToDileptonic_TuneCP5_13TeV-madgraph-pythia8/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM/6E1B71E5-958D-704C-9472-C06468924381.root" 
   ],
-  "nSumOfWeights_before_cuts": 1223408.0,
-  "nSumOfWeights": 243301.0,
+  "nSumOfWeightsBeforeSelec": 1223408.0,
+  "nSumOfWeightsAfterSelec" : 243301.0,
+  "nSumOfWeights": 1223408.0,
   "isData": false
 }
