@@ -88,7 +88,7 @@ def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
 
     for fname in files: 
         if fname.endswith('.pkl.gz'):
-            label = fname[:10]
+            label = fname[:-7]
         else: 
             label = fname
         hist = get_hist(fname, hist_name)
@@ -100,18 +100,26 @@ def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
     max_val = 0
 
     for item in plot_vals:
-        ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
+        if item == "LHCEFT_TT01j2l_ref_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(S1)")
+        elif item == "LHCEFT_TT01j2l_rob_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(S2)")
+        elif item == "TT01j2lCARef_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l")
+        else:
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
         new_val = max(plot_vals[item][1])
         if new_val >= max_val:
             max_val = new_val
 
-    ax.legend(loc = 'upper right', fontsize='medium')
+    ax.legend(loc = 'upper right', fontsize='large')
     ax.set_xlim([-wc_max, wc_max])
     # ax.set_ylim([0.8, max_val+0.5])
-    ax.set_xlabel(wc_name, fontsize = 'medium')
-    #ax.set_ylabel(r"$\sigma_{SMEFT} /\ \sigma_{SM}$", fontsize = 'medium')
-    ax.set_ylabel(r"$\sigma_{SMEFT}$", fontsize = 'medium')
-    plt.grid(True)
+    ax.set_xlabel(wc_name, fontsize = 'large')
+    ax.set_ylabel(r"$\sigma_{SMEFT} /\ \sigma_{SM}$", fontsize = 'large')
+    plt.figtext(0.14, 0.89, r"$pp \rightarrow t\bar{t} \rightarrow l^+ \nu_l b \;\; l^- \bar{\nu_l} \bar{b}$", fontsize='large')
+    plt.figtext(0.72, 0.89,"(13 TeV)", fontsize = 'large')
+
     figname = "quad_1d_"+wc_name+".png"
     fig.savefig(os.path.join(save_dir,figname))
     print("plot saved to: ", os.path.join(save_dir,figname))
@@ -147,7 +155,7 @@ def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_max, wc_name, 
         hist = get_hist(fname, hist_name)
         weights = calc_weight_array(hist, wc_range, wc_name)
         plot_vals[label] = weights
-    
+
     fig, ax = plt.subplots()
 
     ax.scatter(scatter_lst[0], scatter_lst[1], label = "Dedicated Point")
@@ -158,12 +166,16 @@ def make_1d_quad_plot_with_scatter(files, save_dir, hist_name, wc_max, wc_name, 
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="LO (sample 1)")
         elif item == "LHCEFT_TT0j2l_Ref2_sow":
             ax.plot(plot_vals[item][0], plot_vals[item][1],label="LO (sample 2)")
+        elif item == "LHCEFT_TT01j2l_ref_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(S1)")
+        elif item == "LHCEFT_TT01j2l_rob_sow":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(S2)")
         else:
             ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
     
-    ax.legend(loc = 'upper right', fontsize='large')
-    plt.figtext(0.14, 0.89, r"$pp \rightarrow t\bar{t} \rightarrow l^+ \nu_l b \;\; l^- \bar{\nu_l} \bar{b}$", fontsize='large')
-    plt.figtext(0.72, 0.89,"(13 TeV)", fontsize = 'large')
+    ax.legend(loc = 'upper right', fontsize='medium')
+    plt.figtext(0.14, 0.89, r"$pp \rightarrow t\bar{t} \rightarrow l^+ \nu_l b \;\; l^- \bar{\nu_l} \bar{b}$", fontsize='medium')
+    plt.figtext(0.72, 0.89,"(13 TeV)", fontsize = 'medium')
     # ax.legend(loc=(1.04, 0.5))
     ax.set_xlim([-wc_max, wc_max])
     ax.set_xlabel(wc_name, fontsize = 'large')
@@ -209,7 +221,7 @@ def get_points_from_txt(fname):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Customize inputs')
     parser.add_argument('--files', '-f', action='extend', nargs='+', required = True, help = "Specify a list of pkl.gz to run over.")
-    parser.add_argument('--hist-name', default = 'sow', help = 'Which histogram to use')
+    parser.add_argument('--hist-name', default = 'sow_norm', help = 'Which histogram to use')
     parser.add_argument('--wc-range', default = 6.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")
@@ -226,6 +238,10 @@ if __name__ == '__main__':
     save_dir_path = args.outpath
     html_page = args.html
     scatter = args.scatter
+
+    print("Making plots using the pkl files: \n")
+    for f in files: 
+        print(f, "\n")
 
     # Get full list of possible wc names from the first file
     temp_hist = get_hist(files[0], hist_name)
@@ -257,7 +273,10 @@ if __name__ == '__main__':
                 make_1d_quad_plot_with_scatter(files, save_dir_path, hist_name, wc_max, wc, scatter_lst)
     else:
         for wc in wc_list:
-            make_1d_quad_plot(files, save_dir_path, hist_name, wc_max, wc)
+            if wc == 'ctGRe':
+                make_1d_quad_plot(files, save_dir_path, hist_name, 1.0, wc)
+            else:
+                make_1d_quad_plot(files, save_dir_path, hist_name, wc_max, wc)
 
 
     # Make an index.html file if saving to web area

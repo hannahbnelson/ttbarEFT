@@ -16,7 +16,8 @@ plt.rcParams.update(params)
 # fin = 'central_ttbar.pkl.gz'
 #fin = 'sow_S1.pkl.gz'
 #fin = 'allSamplesJetFlav.pkl.gz'
-fin = 'centralJetFlav.pkl.gz'
+#fin = 'centralJetFlav.pkl.gz'
+fin = 'SMweights_test.pkl.gz'
 
 if fin.endswith('.pkl.gz'):
     label = fin[:-7]
@@ -47,6 +48,7 @@ def plot_newhist(hists, name, label):
     fig, ax = plt.subplots(1,1)
     hep.histplot(h, ax=ax, stack=False, histtype="fill", label=label)
     ax.legend()
+    fig.suptitle("Reweighted to the Standard Model")
     #plt.yscale('log')
     fig.savefig(label + "_" + name + ".png")
     print("Saving histogram to " + label + "_" + name + ".png")
