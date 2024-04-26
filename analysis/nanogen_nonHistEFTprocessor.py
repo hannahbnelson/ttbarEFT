@@ -13,8 +13,6 @@ from coffea.analysis_tools import PackedSelection
 from topcoffea.modules import utils
 import topcoffea.modules.eft_helper as efth
 
-import logging
-
 
 ########################
 ##### User Inputs  #####

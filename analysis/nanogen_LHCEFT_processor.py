@@ -24,6 +24,25 @@ rwgt_pt1 = {"ctGIm": 1.0, "ctGRe":1.0, "cQj38": 3.0, "cQj18": 3.0,
           "ctd8": 3.0, "cQj31": 3.0, "cQj11": 3.0, "cQu1": 3.0,
           "cQd1": 3.0, "ctj1": 3.0, "ctu1": 3.0, "ctd1": 3.0}
 
+# Close to the limits we have, positive ctG
+rwgt_pt2 = {'ctGIm': 1.0, 'ctGRe':1.0, 'cQj38':6.0, 'cQj18':5.0,
+            'cQu8':4.0, 'cQd8':9.0, 'ctj8':3.0, 'ctu8':4.5,
+            'ctd8':9.0, 'cQj31':3.0, 'cQj11':3.0, 'cQu1':3.0,
+            'cQd1':4.5, 'ctj1':2.5, 'ctu1':3.2, 'ctd1':4.5}
+
+# Larger WC values (roughly double limits we have)
+rwgt_pt3 = {'ctGIm': 3, 'ctGRe':3, 'cQj38':12.0, 'cQj18':10.0,
+            'cQu8':8.0, 'cQd8':18.0, 'ctj8':6.0, 'ctu8':9,
+            'ctd8':18.0, 'cQj31':6.0, 'cQj11':6.0, 'cQu1':6.0,
+            'cQd1':9, 'ctj1':5, 'ctu1':7, 'ctd1':9}
+
+# Larger WC values, ctG slightly smaller in commparison
+rwgt_pt4 = {'ctGIm': 1.5, 'ctGRe':1.5, 'cQj38':12.0, 'cQj18':10.0,
+            'cQu8':8.0, 'cQd8':18.0, 'ctj8':6.0, 'ctu8':9,
+            'ctd8':18.0, 'cQj31':6.0, 'cQj11':6.0, 'cQu1':6.0,
+            'cQd1':9, 'ctj1':5, 'ctu1':7, 'ctd1':9}
+
+
 # Get the lumi for the given year
 def get_lumi(year):
     lumi_dict = {
@@ -167,12 +186,16 @@ class AnalysisProcessor(processor.ProcessorABC):
         ntops = ak.num(gen_top)
 
         at_least_two_leps = ak.fill_none(nleps>=2,False)
-        at_least_two_jets = ak.fill_none(njets>=2, False)
+        at_least_two_jets = ak.fill_none(njets>=2,False)
+        # mtt_selec = ak.fill_none(mtt<700, False)
+        # mtt_selec = ak.fill_none(mtt > 900, False)
+        # mtt_selec = ak.fill_none(mtt >=700 & mtt <= 900, False)
 
         selections = PackedSelection()
         selections.add('2l', at_least_two_leps)
         selections.add('2j', at_least_two_jets)
-        event_selection_mask = selections.all('2l', '2j')
+        selections.add('mtt', mtt_selec)
+        event_selection_mask = selections.all('2l', '2j', 'mtt')
 
         leps_cut = leps[event_selection_mask]
         dr_l0 = leps_cut[:,0]
@@ -202,6 +225,15 @@ class AnalysisProcessor(processor.ProcessorABC):
         wc_lst_pt1 = order_wc_values(self._wc_names_lst, rwgt_pt1)
         event_weights_pt1 = calc_event_weights(eft_coeffs_cut, wc_lst_pt1)
 
+        wc_lst_pt2 = order_wc_values(self._wc_names_lst, rwgt_pt2)
+        event_weights_pt2 = calc_event_weights(eft_coeffs_cut, wc_lst_pt2)
+
+        wc_lst_pt3 = order_wc_values(self._wc_names_lst, rwgt_pt3)
+        event_weights_pt3 = calc_event_weights(eft_coeffs_cut, wc_lst_pt3)
+
+        wc_lst_pt4 = order_wc_values(self._wc_names_lst, rwgt_pt4)
+        event_weights_pt4 = calc_event_weights(eft_coeffs_cut, wc_lst_pt4)
+
         ######## Normalization ########
 
         # Normalize by (xsec/sow)
@@ -228,7 +260,10 @@ class AnalysisProcessor(processor.ProcessorABC):
                 continue
 
             # hout[var_name].fill(var_values, weight=event_weights_SM*norm)
-            hout[var_name].fill(var_values, weight=event_weights_pt1*norm)
+            # hout[var_name].fill(var_values, weight=event_weights_pt1*norm)
+            # hout[var_name].fill(var_values, weight=event_weights_pt2*norm)
+            # hout[var_name].fill(var_values, weight=event_weights_pt3*norm)
+            # hout[var_name].fill(var_values, weight=event_weights_pt4*norm)
             # hout[var_name].fill(var_values, weight=w2)
 
         return hout
