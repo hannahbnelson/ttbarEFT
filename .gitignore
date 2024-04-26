@@ -13,6 +13,8 @@ analysis/hists/*
 analysis/*.png
 analysis/plots/*
 analysis/tmp*-tmp-*/
+analysis/*.pkl.gz
+analysis/*.pdf
 
 # Distribution / packaging
 *.egg
