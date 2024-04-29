@@ -123,11 +123,36 @@ class AnalysisProcessor(processor.ProcessorABC):
         # }
 
         self._histo_dict = {
-            "avg_top_pt"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
-            "l0pt"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
-            "dr_leps"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
-            "mtt"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
-            "njets"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
+            "avg_top_pt_SM"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
+            "l0pt_SM"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps_SM"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
+            "mtt_SM"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            "njets_SM"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
+            "avg_top_pt_rwgt1"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
+            "l0pt_rwgt1"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps_rwgt1"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
+            "mtt_rwgt1"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            "njets_rwgt1"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
+            "avg_top_pt_rwgt2"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
+            "l0pt_rwgt2"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps_rwgt2"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
+            "mtt_rwgt2"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            "njets_rwgt2"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
+            "avg_top_pt_rwgt3"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
+            "l0pt_rwgt3"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps_rwgt3"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
+            "mtt_rwgt3"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            "njets_rwgt3"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
+            "avg_top_pt_rwgt4"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
+            "l0pt_rwgt4"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps_rwgt4"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
+            "mtt_rwgt4"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            "njets_rwgt4"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
+            "avg_top_pt_rwgt5"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
+            "l0pt_rwgt5"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps_rwgt5"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
+            "mtt_rwgt5"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            "njets_rwgt5"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
         }
 
         # Set the list of hists to to fill
@@ -202,18 +227,18 @@ class AnalysisProcessor(processor.ProcessorABC):
         at_least_two_leps = ak.fill_none(nleps>=2,False)
         at_least_two_jets = ak.fill_none(njets>=2,False)
         # mtt_selec = ak.fill_none(mtt<700, False)
-        # mtt_selec = ak.fill_none(mtt > 900, False)
+        mtt_selec = ak.fill_none(mtt > 900, False)
         # mtt_selec1 = ak.fill_none(mtt >=700, False)
         # mtt_selec2 = ak.fill_none(mtt <= 900, False)
 
         selections = PackedSelection()
         selections.add('2l', at_least_two_leps)
         selections.add('2j', at_least_two_jets)
-        # selections.add('mtt', mtt_selec)
+        selections.add('mtt', mtt_selec)
         # selections.add('mtt1', mtt_selec1)
         # selections.add('mtt2', mtt_selec2)
-        event_selection_mask = selections.all('2l', '2j')
-        # event_selection_mask = selections.all('2l', '2j', 'mtt')
+        # event_selection_mask = selections.all('2l', '2j')
+        event_selection_mask = selections.all('2l', '2j', 'mtt')
         # event_selection_mask = selections.all('2l', '2j', 'mtt1', 'mtt2')
 
         leps_cut = leps[event_selection_mask]
@@ -277,16 +302,16 @@ class AnalysisProcessor(processor.ProcessorABC):
         }
 
         for var_name, var_values in variables_to_fill.items():
-            if var_name not in self._hist_lst:
-                print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
-                continue
+            # if var_name not in self._hist_lst:
+            #     print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
+            #     continue
 
-            # hout[var_name].fill(var_values, weight=event_weights_SM*norm)
-            # hout[var_name].fill(var_values, weight=event_weights_pt1*norm)
-            hout[var_name].fill(var_values, weight=event_weights_pt2*norm)
-            # hout[var_name].fill(var_values, weight=event_weights_pt3*norm)
-            # hout[var_name].fill(var_values, weight=event_weights_pt4*norm)
-            # hout[var_name].fill(var_values, weight=event_weights_pt5*norm)
+            hout[var_name+'_SM'].fill(var_values, weight=event_weights_SM*norm)
+            hout[var_name+'_rwgt1'].fill(var_values, weight=event_weights_pt1*norm)
+            hout[var_name+'_rwgt2'].fill(var_values, weight=event_weights_pt2*norm)
+            hout[var_name+'_rwgt3'].fill(var_values, weight=event_weights_pt3*norm)
+            hout[var_name+'_rwgt4'].fill(var_values, weight=event_weights_pt4*norm)
+            hout[var_name+'_rwgt5'].fill(var_values, weight=event_weights_pt5*norm)
             # hout[var_name].fill(var_values, weight=w2)
 
         return hout

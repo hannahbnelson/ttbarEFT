@@ -26,7 +26,8 @@ proc_options = ["nanogen_processor",
                 "new_nanogen_processor", 
                 "nanogen_jet_flav_processor", 
                 "nanogen_LHCEFT_processor",
-                "nanogen_TT01j2lCARef_processor"]
+                "nanogen_TT01j2lCARef_processor",
+                "nanogen_mttbin_err_processor"]
 
 
 if __name__ == '__main__':
@@ -83,6 +84,8 @@ if __name__ == '__main__':
         import nanogen_LHCEFT_processor as nanogen_processor
     elif proc == 'nanogen_TT01j2lCARef_processor':
         import nanogen_TT01j2lCARef_processor as nanogen_processor
+    elif proc == 'nanogen_mttbin_err_processor':
+        import nanogen_mttbin_err_processor as nanogen_processor
 
 
     proc_file = proc+'.py'
