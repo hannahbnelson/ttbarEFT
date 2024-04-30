@@ -106,6 +106,14 @@ def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(S2)")
         elif item == "TT01j2lCARef_sow":
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l")
+        elif item == "TT01j2lCARef_sow_norm":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2lCARef")
+        elif item == "TT01j2lCARef_sow_0_700":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(mtt<700)")
+        elif item == "TT01j2lCARef_sow_700_900":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(700<mtt<900)")
+        elif item == "TT01j2lCARef_sow_900_inf":
+            ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(mtt>900)")
         else:
             ax.plot(plot_vals[item][0], plot_vals[item][1], label = item)
         new_val = max(plot_vals[item][1])
@@ -120,7 +128,7 @@ def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
     plt.figtext(0.14, 0.89, r"$pp \rightarrow t\bar{t} \rightarrow l^+ \nu_l b \;\; l^- \bar{\nu_l} \bar{b}$", fontsize='large')
     plt.figtext(0.72, 0.89,"(13 TeV)", fontsize = 'large')
 
-    figname = "quad_1d_"+wc_name+".png"
+    figname = "quad_1d_mtt_"+wc_name+".png"
     fig.savefig(os.path.join(save_dir,figname))
     print("plot saved to: ", os.path.join(save_dir,figname))
     plt.close(fig)
@@ -221,7 +229,7 @@ def get_points_from_txt(fname):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Customize inputs')
     parser.add_argument('--files', '-f', action='extend', nargs='+', required = True, help = "Specify a list of pkl.gz to run over.")
-    parser.add_argument('--hist-name', default = 'sow_norm', help = 'Which histogram to use')
+    parser.add_argument('--hist-name', default = 'sow', help = 'Which histogram to use')
     parser.add_argument('--wc-range', default = 6.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")
@@ -274,7 +282,7 @@ if __name__ == '__main__':
     else:
         for wc in wc_list:
             if wc == 'ctGRe':
-                make_1d_quad_plot(files, save_dir_path, hist_name, 1.0, wc)
+                make_1d_quad_plot(files, save_dir_path, hist_name, 2.0, wc)
             else:
                 make_1d_quad_plot(files, save_dir_path, hist_name, wc_max, wc)
 
