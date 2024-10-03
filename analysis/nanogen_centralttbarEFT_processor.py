@@ -52,32 +52,57 @@ class AnalysisProcessor(processor.ProcessorABC):
         syst_axis = hist.axis.StrCategory([], name="systematic", label=r"Systematic Uncertainty", growth=True)
 
         self._histo_dict = {
-            "njets" : HistEFT(
-                        proc_axis, 
-                        hist.axis.Regular(bins=70, start=0, stop=700, name="tops_pt", label="$p_T$ of the sum of the tops"),
-                        wc_names=wc_names_lst,
-                        label="Events")
+            "njets"     :HistEFT(
+                            proc_axis, 
+                            hist.axis.Regular(bins=10, start=0, stop=10, name="njets", label="njets"),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "nleps"     :HistEFT(
+                            proc_axis, 
+                            hist.axis.Regular(bins=10, start=0, stop=10, name="nleps", label="nleps"),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "ntops"     :HistEFT(
+                            proc_axis, 
+                            hist.axis.Regular(bins=10, start=0, stop=10, name="ntops", label="ntops"),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "mtt"       :HistEFT(
+                            proc_axis,
+                            hist.axis.Regular(bins=65, start=0, stop=1300, name='mtt', label='invariant mass of tops [GeV]'),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "mll"       :HistEFT(
+                            proc_axis, 
+                            hist.axis.Regular(bins=40, start=0, stop=800, name='mll', label='invariant mass of the leptons [GeV]'),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "dr_leps"   :HistEFT(
+                            proc_axis, 
+                            hist.axis.Regular(bins=40, start=0, stop=8, name='dr_leps', label='$\Delta R$ (leading lepton, subleading lepton)'),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "l0pt"      :HistEFT(
+                            proc_axis, 
+                            hist.axis.Regular(bins=40, start=0, stop=400, name='l0pt', label='leading lepton $p_T$ [GeV]'),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "tops_pt"   :HistEFT(
+                            proc_axis,
+                            hist.axis.Regular(bins=70, start=0, stop=700, name="tops_pt", label="$p_T$ of the sum of the tops [GeV]"),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "avg_top_pt":HistEFT(
+                            proc_axis,
+                            hist.axis.Regular(bins=40, start=0, stop=400, name="avg_top_pt", label="average top $p_T$ [GeV]"),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "sow"       :HistEFT(
+                            proc_axis,
+                            hist.axis.Regular(bins=1, start=0, stop=2, name="sow", label="sum of weights for all events"), 
+                            wc_names=wc_names_lst, 
+                            label="Events"),
         }
-
-
-        # # Create the histograms with new scikit hist
-        # self._histo_dict = {
-        #     "tops_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("tops_pt", "$p_T$ of the sum of the tops", 70, 0, 700)),
-        #     "avg_top_pt"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("avg_top_pt", "average top $p_T$ [GeV]", 40, 0, 400)),
-        #     "l0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("l0pt", "leading lepton $p_T$ [GeV]", 40, 0, 400)),
-        #     "dr_leps"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("dr_leps", "$\Delta R$ (leading lepton, subleading lepton)", 40, 0, 8)),
-        #     "ht"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ht", "hT(Scalar sum of genjet pt)", 50, 0, 1000)),
-        #     "jets_pt"      : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("jets_pt", "pT of the sum of the jets", 50, 0, 1000)),
-        #     "j0pt"         : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("j0pt", "pT of the leading jet", 50, 0, 1000)),
-        #     "ntops"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("ntops", "ntops", 10, 0, 10)),
-        #     "njets"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("njets", "njets", 10, 0, 10)),
-        #     "mtt"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mtt", "invariant mass of tops", 65, 0, 1300)),
-        #     "nleps"        : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("nleps", "number of leptons", 10, 0, 10)),
-        #     "mll"          : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("mll", "invariant mass of the leptons", 40, 0, 800)),
-        #     "LHE_HT"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("LHE_HT", "LHE_HT", 50, 0, 1000)),
-        #     "LHE_HTIncoming": HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("LHE_HTIncoming", "LHE_HTIncoming", 25, 0, 1000)),
-        #     "sow"           : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("sow", "sum of weights", 1, 0, 2)),
-        # }
 
         # Set the list of hists to to fill
         if hist_lst is None:
@@ -111,7 +136,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Extract the EFT quadratic coefficients and optionally use them to calculate the coefficients on the w**2 quartic function
         # eft_coeffs is never Jagged so convert immediately to numpy for ease of use.
         eft_coeffs = ak.to_numpy(events['EFTfitCoefficients']) if hasattr(events, "EFTfitCoefficients") else None
-        eft_w2_coeffs = efth.calc_w2_coeffs(eft_coeffs,self._dtype) if (self._do_errors and eft_coeffs is not None) else None
+        # eft_w2_coeffs = efth.calc_w2_coeffs(eft_coeffs,self._dtype) if (self._do_errors and eft_coeffs is not None) else None
 
 
         # Initialize objects
@@ -224,11 +249,11 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        norm = (xsec/sow)
+        # norm = (xsec/sow)
         # norm = (1/sow_after_selec)
         # norm = (1/sow)
         # norm = (1/200)
-        # norm = 1
+        norm = 1
 
         # norm = 1/mtt_norm
 
@@ -246,38 +271,32 @@ class AnalysisProcessor(processor.ProcessorABC):
         hout = self._histo_dict
 
         variables_to_fill = {
-            "njets" : njets_cut,
+            "njets"     : njets_cut,
+            # "nleps"     : nleps_cut,
+            # "ntops"     : ntops_cut,
+            # "mtt"       : mtt_cut,
+            # "mll"       : mll,
+            # "dr_leps"   : dr_cut,
+            # "l0pt"      : ak.flatten(l0pt_cut),
+            # "tops_pt"   : tops_pt_cut,
+            # "avg_top_pt": avg_top_pt_cut,
+            # "sow"       : counts,
         }
 
-        # variables_to_fill = {
-        #     "tops_pt"   : tops_pt_cut,
-        #     "l0pt"      : ak.flatten(l0pt_cut),
-        #     "dr_leps"   : dr_cut,
-        #     "avg_top_pt": avg_top_pt_cut,
-        #     "njets"     : njets_cut,
-        #     "nleps"     : nleps_cut,
-        #     "mtt"       : mtt_cut,
-        #     "ht"        : ht_cut,
-        #     "ntops"     : ntops_cut,
-        #     "jets_pt"   : jets_pt_cut,
-        #     "j0pt"      : ak.flatten(j0pt_cut),
-        #     "mll"       : mll,
-        #     "LHE_HT"    : lhe_ht,
-        #     "LHE_HTIncoming" : lhe_htincoming, 
-        #     "sow"       : counts,
-        # }
-
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
-        eft_w2_coeffs_cut = eft_w2_coeffs[event_selection_mask] if eft_w2_coeffs is not None else None
+        # eft_w2_coeffs_cut = eft_w2_coeffs[event_selection_mask] if eft_w2_coeffs is not None else None
 
         for var_name, var_values in variables_to_fill.items():
             if var_name not in self._hist_lst:
                 print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
                 continue
 
+            print("\n\n event_weights: ", np.asarray(event_weights[event_selection_mask]).shape, "\n\n")
+            print("\n\n eft_coeffs: ", np.asarray(eft_coeffs_cut).shape, "\n\n")
+
             fill_info = {
                 var_name    : var_values,
-                "process"    : hist_axis_name,
+                "process"   : hist_axis_name,
                 "weight"    : event_weights[event_selection_mask],
                 "eft_coeff" : eft_coeffs_cut,
             }
