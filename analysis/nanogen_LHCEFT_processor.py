@@ -236,25 +236,29 @@ class AnalysisProcessor(processor.ProcessorABC):
         lhe_ht = events.LHE.HT[event_selection_mask]
         lhe_htincoming = events.LHE.HTIncoming[event_selection_mask] 
 
-        eft_coeffs_cut = eft_coeffs[event_selection_mask]
+        eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
 
-        wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
-        event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
+        if eft_coeffs is None:
+            genw = events["genWeight"]
 
-        wc_lst_pt1 = order_wc_values(self._wc_names_lst, rwgt_pt1)
-        event_weights_pt1 = calc_event_weights(eft_coeffs_cut, wc_lst_pt1)
+        else: 
+            wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
+            event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
 
-        wc_lst_pt2 = order_wc_values(self._wc_names_lst, rwgt_pt2)
-        event_weights_pt2 = calc_event_weights(eft_coeffs_cut, wc_lst_pt2)
+            wc_lst_pt1 = order_wc_values(self._wc_names_lst, rwgt_pt1)
+            event_weights_pt1 = calc_event_weights(eft_coeffs_cut, wc_lst_pt1)
 
-        wc_lst_pt3 = order_wc_values(self._wc_names_lst, rwgt_pt3)
-        event_weights_pt3 = calc_event_weights(eft_coeffs_cut, wc_lst_pt3)
+            wc_lst_pt2 = order_wc_values(self._wc_names_lst, rwgt_pt2)
+            event_weights_pt2 = calc_event_weights(eft_coeffs_cut, wc_lst_pt2)
 
-        wc_lst_pt4 = order_wc_values(self._wc_names_lst, rwgt_pt4)
-        event_weights_pt4 = calc_event_weights(eft_coeffs_cut, wc_lst_pt4)
+            wc_lst_pt3 = order_wc_values(self._wc_names_lst, rwgt_pt3)
+            event_weights_pt3 = calc_event_weights(eft_coeffs_cut, wc_lst_pt3)
 
-        wc_lst_pt5 = order_wc_values(self._wc_names_lst, rwgt_pt5)
-        event_weights_pt5 = calc_event_weights(eft_coeffs_cut, wc_lst_pt5)
+            wc_lst_pt4 = order_wc_values(self._wc_names_lst, rwgt_pt4)
+            event_weights_pt4 = calc_event_weights(eft_coeffs_cut, wc_lst_pt4)
+
+            wc_lst_pt5 = order_wc_values(self._wc_names_lst, rwgt_pt5)
+            event_weights_pt5 = calc_event_weights(eft_coeffs_cut, wc_lst_pt5)
 
         ######## Normalization ########
 
@@ -265,6 +269,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         # norm = 1.0
 
         # w2 = np.square(event_weights_SM*norm)
+
+        if eft_coeffs is None:
+            event_weights = genw*norm
 
         ######## Fill histos ########
         hout = self._histo_dict
@@ -281,9 +288,13 @@ class AnalysisProcessor(processor.ProcessorABC):
                 print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
                 continue
 
+            ## Use this for SM samples w/o EFTFitCoefficients
+            # hout[var_name].fill(var_values, weight=event_weights[event_selection_mask])
+
+            ## Use this block for EFT samples 
             # hout[var_name].fill(var_values, weight=event_weights_SM*norm)
-            # hout[var_name].fill(var_values, weight=event_weights_pt1*norm)
-            hout[var_name].fill(var_values, weight=event_weights_pt2*norm)
+            hout[var_name].fill(var_values, weight=event_weights_pt1*norm)
+            # hout[var_name].fill(var_values, weight=event_weights_pt2*norm)
             # hout[var_name].fill(var_values, weight=event_weights_pt3*norm)
             # hout[var_name].fill(var_values, weight=event_weights_pt4*norm)
             # hout[var_name].fill(var_values, weight=event_weights_pt5*norm)
