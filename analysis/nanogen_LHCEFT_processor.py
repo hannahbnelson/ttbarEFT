@@ -123,10 +123,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         # }
 
         self._histo_dict = {
-            "avg_top_pt"        : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"),
-            "l0pt"              : Hist(hist.axis.Regular(bins=50, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"),
-            "dr_leps"           : Hist(hist.axis.Regular(bins=30, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"),
-            "mtt"               : Hist(hist.axis.Regular(bins=80, start=0, stop=2000, name="invariant mass of tops"), storage="weight"),
+            # "avg_top_pt"        : Hist(hist.axis.Regular(bins=25, start=0, stop=500, name="average top $p_T$ [GeV]"), storage="weight"), # 50
+            "avg_top_pt"        : Hist(hist.axis.Variable([0, 20, 40, 60 ,80 , 100, 140, 200, 300, 400, 500], name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            # "l0pt"              : Hist(hist.axis.Regular(bins=25, start=0, stop=500, name="leading lepton $p_T$ [GeV]"), storage="weight"), # 50
+            "l0pt"              : Hist(hist.axis.Variable([0, 20, 40, 60 ,80 , 100, 140, 200, 300, 400, 500], name="leading lepton $p_T$ [GeV]"), storage="weight"),
+            "dr_leps"           : Hist(hist.axis.Regular(bins=24, start=0, stop=6, name="$\Delta R$ (leading lepton, subleading lepton)"), storage="weight"), # 30 
+            "mtt"               : Hist(hist.axis.Regular(bins=40, start=0, stop=2000, name="invariant mass of tops"), storage="weight"), # 80
             "njets"             : Hist(hist.axis.Regular(bins=10, start=0, stop=10, name="njets"), storage="weight"),
         }
 
