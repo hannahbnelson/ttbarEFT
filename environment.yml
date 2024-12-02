@@ -1,4 +1,4 @@
-name: ttbarEFT-env
+name: ttbarEFT
 channels:
   - conda-forge
 dependencies:
@@ -11,3 +11,5 @@ dependencies:
   - xrootd
   - git
   - pyyaml
+  - setuptools==70.3.0
+
