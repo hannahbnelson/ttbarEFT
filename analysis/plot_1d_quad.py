@@ -52,8 +52,27 @@ def calc_weight_array(hist, wc_range, wc_name):
     wc_vals = {}
     
     # set all initial WC values to 0.0
-    for item in wc_lst:
-        wc_vals[item] = 0.0
+    # for item in wc_lst:
+    #     wc_vals[item] = 0.0
+
+    # S0 starting point 
+    wc_vals= {"ctGIm": -0.5, "ctGRe":-0.5, "cQj38":1.5, "cQj18":1.5, 
+            "cQu8":1.5, "cQd8":1.5, "ctj8":1.5, "ctu8":1.5, 
+            "ctd8":1.5, "cQj31":1.5, "cQj11":1.5, "cQu1":1.5, 
+            "cQd1":1.5, "ctj1":1.5, "ctu1":1.5, "ctd1":1.5}
+
+    # S1 starting point
+    # wc_vals= {"ctGIm": 0.7, "ctGRe":0.7, "cQj38":9.0, "cQj18":7.0, 
+    #         "cQu8":9.5, "cQd8":12.0, "ctj8":7.0, "ctu8":9.0, 
+    #         "ctd8":12.4, "cQj31":3.0, "cQj11":4.2, "cQu1":5.5, 
+    #         "cQd1":7.0, "ctj1":4.4, "ctu1":5.4, "ctd1":7.0}
+
+    # S2 starting point 
+    # wc_vals= {"ctGIm": 1.0, "ctGRe":1.0, "cQj38":3.0, "cQj18":3.0, 
+    #         "cQu8":3.0, "cQd8":3.0, "ctj8":3.0, "ctu8":3.0, 
+    #         "ctd8":3.0, "cQj31":3.0, "cQj11":3.0, "cQu1":3.0, 
+    #         "cQd1":3.0, "ctj1":3.0, "ctu1":3.0, "ctd1":3.0}
+
 
     # loop through different values of the wc coeff, get sum of event weights
     for i in wc_range:
@@ -106,7 +125,7 @@ def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(S2)")
         elif item == "TT01j2lCARef_sow":
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l")
-        elif item == "TT01j2lCARef_sow_norm":
+        elif item == "TT01j2lCARef_sow_norm": 
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2lCARef")
         elif item == "TT01j2lCARef_sow_0_700":
             ax.plot(plot_vals[item][0], plot_vals[item][1], label="TT01j2l(mtt<700)")
@@ -128,7 +147,9 @@ def make_1d_quad_plot(files, save_dir, hist_name, wc_max, wc_name):
     plt.figtext(0.14, 0.89, r"$pp \rightarrow t\bar{t} \rightarrow l^+ \nu_l b \;\; l^- \bar{\nu_l} \bar{b}$", fontsize='large')
     plt.figtext(0.72, 0.89,"(13 TeV)", fontsize = 'large')
 
-    figname = "quad_1d_mtt_"+wc_name+".png"
+    figname = "S0stpt_quad_1d_mtt_"+wc_name+".png"
+    # figname = "S1stpt_quad_1d_mtt_"+wc_name+".png"
+    # figname = "S2stpt_quad_1d_mtt_"+wc_name+".png"
     fig.savefig(os.path.join(save_dir,figname))
     print("plot saved to: ", os.path.join(save_dir,figname))
     plt.close(fig)
@@ -229,7 +250,7 @@ def get_points_from_txt(fname):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Customize inputs')
     parser.add_argument('--files', '-f', action='extend', nargs='+', required = True, help = "Specify a list of pkl.gz to run over.")
-    parser.add_argument('--hist-name', default = 'sow', help = 'Which histogram to use')
+    parser.add_argument('--hist-name', default = 'sow_norm', help = 'Which histogram to use')
     parser.add_argument('--wc-range', default = 6.0, type = float, help = 'Range for wc calculated. Plot created for [-num, num).')
     parser.add_argument('--wc-name', action='extend', nargs='+', default = None, help = 'WC names to make plots for')
     parser.add_argument('--outpath',  default=".", help = "The path the output files should be saved to")

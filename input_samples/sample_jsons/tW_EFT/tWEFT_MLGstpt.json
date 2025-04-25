@@ -1,0 +1,38 @@
+{
+  "xsec": 6.0166082107,
+  "year": "2017",
+  "treeName": "Events",
+  "histAxisName": "TLNuto2L2Nu_MLGstpt",
+  "options": "",
+  "WCnames": [
+    "ctGIm", 
+    "ctGRe", 
+    "cHQ3", 
+    "ctWRe", 
+    "cleQt3Re", 
+    "cleQt1Re", 
+    "cQl3", 
+    "cbWRe", 
+    "cHtbRe"
+  ],
+  "files":[
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_472.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_604.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_625.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_629.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_633.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_638.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/fixed_rwgts/NanoGen_tW_MLGstpt/nanoGen_640.root"
+    ],
+  "og_files": [
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_457.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_466.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_469.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_472.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_475.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_480.root",
+    "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v3/NanoGen_tW_MLGstpt/nanoGen_484.root"
+  ],
+  "nSumOfWeights": 601.66082107,
+  "isData": false
+}

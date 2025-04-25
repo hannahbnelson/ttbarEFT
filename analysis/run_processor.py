@@ -5,30 +5,16 @@ import time
 import cloudpickle
 import gzip
 import os
+import importlib
 
 import numpy as np
-from coffea import hist, processor
+from coffea import processor
 from coffea.nanoevents import NanoAODSchema
 
 from topcoffea.modules import utils
 import topcoffea.modules.remote_environment as remote_environment
 
-# import nanogen_processor_with_weights
-
 LST_OF_KNOWN_EXECUTORS = ["futures","work_queue"]
-proc_options = ["nanogen_processor",
-                "nanogen_nonHistEFTprocessor",
-                "nanogen_eftcoeff",
-                "nanogen_processor_with_weights",
-                "nanogen_njets", 
-                "sow_processor", 
-                "djr", 
-                "new_nanogen_processor", 
-                "nanogen_jet_flav_processor", 
-                "nanogen_LHCEFT_processor",
-                "nanogen_TT01j2lCARef_processor",
-                "nanogen_mttbin_err_processor"]
-
 
 if __name__ == '__main__':
 
@@ -43,9 +29,10 @@ if __name__ == '__main__':
     parser.add_argument('--nchunks','-c'  , default=None  , help = 'You can choose to run only a number of chunks')
     parser.add_argument('--outname','-o'  , default='histos', help = 'Name of the output file with histograms')
     parser.add_argument('--treename'      , default='Events', help = 'Name of the tree inside the files')
+    parser.add_argument('--wc-list', action='extend', nargs='+', help = 'Specify a list of Wilson coefficients to use in filling histograms.')
     parser.add_argument('--hist-list', action='extend', nargs='+', help = 'Specify a list of histograms to fill.')
     parser.add_argument('--port', default='9123-9130', help = 'Specify the Work Queue port. An integer PORT or an integer range PORT_MIN-PORT_MAX.')
-    parser.add_argument('--processor', '-p', default='nanogen_processor', help='Specify processor name (without .py)')
+    parser.add_argument('--processor', '-p', default='analysis_processor.py', help='Specify processor file name')
 
     args        = parser.parse_args()
     jsonFiles  = args.jsonFiles
@@ -57,39 +44,14 @@ if __name__ == '__main__':
     nchunks     = int(args.nchunks) if not args.nchunks is None else args.nchunks
     outname     = args.outname
     treename    = args.treename
-    proc        = args.processor
+    wc_lst = args.wc_list if args.wc_list is not None else []
+    proc_file   = args.processor
+    proc_name   = args.processor[:-3]
 
-    if proc not in proc_options:
-        raise Exception(f"The \"{proc}\" processor is not known. Modify the run script or choose from the list of known processors: {proc_options}. Exiting. ")
-
-    if proc == "nanogen_processor":
-        import nanogen_processor
-    elif proc == "nanogen_nonHistEFTprocessor":
-        import nanogen_nonHistEFTprocessor as nanogen_processor
-    elif proc == "nanogen_eftcoeff":
-        import nanogen_eftcoeff as nanogen_processor
-    elif proc == "nanogen_processor_with_weights":
-        import nanogen_processor_with_weights as nanogen_processor
-    elif proc == "nanogen_njets":
-        import nanogen_njets as nanogen_processor
-    elif proc == "sow_processor":
-        import sow_processor as nanogen_processor
-    elif proc == 'djr':
-        import djr as nanogen_processor
-    elif proc == 'new_nanogen_processor':
-        import new_nanogen_processor as nanogen_processor
-    elif proc == 'nanogen_jet_flav_processor':
-        import nanogen_jet_flav_processor as nanogen_processor
-    elif proc == 'nanogen_LHCEFT_processor':
-        import nanogen_LHCEFT_processor as nanogen_processor
-    elif proc == 'nanogen_TT01j2lCARef_processor':
-        import nanogen_TT01j2lCARef_processor as nanogen_processor
-    elif proc == 'nanogen_mttbin_err_processor':
-        import nanogen_mttbin_err_processor as nanogen_processor
-
-
-    proc_file = proc+'.py'
     print("\n running with processor: ", proc_file, '\n')
+    print("\n jsonFiles argument: ", jsonFiles, '\n')
+
+    analysis_processor = importlib.import_module(proc_name)
 
     # Check if we have valid options
     if executor not in LST_OF_KNOWN_EXECUTORS:
@@ -114,7 +76,7 @@ if __name__ == '__main__':
                     "weights_pt3", "weights_pt3_log",
                     "weights_pt4", "weights_pt4_log"]
     elif args.hist_list == ["kinematics"]:
-        hist_lst = ["tops_pt", "avg_top_pt", "l0pt", "dr_leps", "ht", "jets_pt", "j0pt", "ntops", "njets", "nleps", "mtt", "mll"]
+        hist_lst = ["tops_pt", "avg_top_pt", "l0pt", "dr_leps", "ht", "jets_pt", "j0pt", "njets", "mtt", "mll"]
     else:
         hist_lst = args.hist_list
 
@@ -133,6 +95,7 @@ if __name__ == '__main__':
         jsonFiles = jsonFiles.replace(' ', '').split(',')
     elif isinstance(jsonFiles, str):
         jsonFiles = [jsonFiles]
+    
     for jsonFile in jsonFiles:
         if os.path.isdir(jsonFile):
             if not jsonFile.endswith('/'): jsonFile+='/'
@@ -185,19 +148,39 @@ if __name__ == '__main__':
     # Get the list of WCs
     # Here we make sure WC list is same for all files
     # There are ways of handling if not, but for now let's just stick to the simple case
-    wc_set = ()
-    for item in samplesdict:
-        for i, file_name in enumerate(samplesdict[item]['files']):
-            wc_lst = utils.get_list_of_wc_names(file_name)
-            if i==0:
-                wc_set = set(wc_lst)
-            else:
-                if set(wc_lst) != wc_set:
-                   raise Exception("ERROR: Not all files have same WC list")
-    wc_lst = wc_lst
+    # wc_set = ()
+    # for item in samplesdict:
+    #     for i, file_name in enumerate(samplesdict[item]['files']):
+    #         wc_lst = utils.get_list_of_wc_names(file_name)
+    #         if i==0:
+    #             wc_set = set(wc_lst)
+    #         else:
+    #             if set(wc_lst) != wc_set:
+    #                raise Exception("ERROR: Not all files have same WC list")
+    # wc_lst = wc_lst
+
+    # Extract the list of all WCs, as long as we haven't already specified one.
+    if len(wc_lst) == 0:
+        for k in samplesdict.keys():
+            for wc in samplesdict[k]['WCnames']:
+                if wc not in wc_lst:
+                    wc_lst.append(wc)
+
+    if len(wc_lst) > 0:
+        # Yes, why not have the output be in correct English?
+        if len(wc_lst) == 1:
+            wc_print = wc_lst[0]
+        elif len(wc_lst) == 2:
+            wc_print = wc_lst[0] + ' and ' + wc_lst[1]
+        else:
+            wc_print = ', '.join(wc_lst[:-1]) + ', and ' + wc_lst[-1]
+            print('Wilson Coefficients: {}.'.format(wc_print))
+    
+    else:
+        print('No Wilson coefficients specified')
 
     # Run the processor and get the output
-    processor_instance = nanogen_processor.AnalysisProcessor(samplesdict,wc_lst,hist_lst)
+    processor_instance = analysis_processor.AnalysisProcessor(samplesdict,wc_lst,hist_lst)
 
     if executor == "work_queue":
         executor_args = {

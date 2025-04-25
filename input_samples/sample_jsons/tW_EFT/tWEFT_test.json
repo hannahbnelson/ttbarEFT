@@ -1,0 +1,23 @@
+ {
+    "xsec":1.0, 
+    "year": "2017",
+    "treeName": "Events",
+    "histAxisName": "TLNuto2L2Nu_OGstpt",
+    "options": "",
+    "WCnames": [
+        "ctGIm", 
+        "ctGRe", 
+        "cHQ3", 
+        "ctWRe", 
+        "cleQt3Re", 
+        "cleQt1Re", 
+        "cQl3", 
+        "cbWRe", 
+        "cHtbRe"
+        ],
+    "files": [
+        "/cms/cephfs/data/store/user/hnelson2/tW_EFT/nanoGen/test_v5/NanoGen_tW_OGstpt/nanoGen_11.root"
+        ],
+    "nSumOfWeights": 1.0,
+    "isData": false
+}

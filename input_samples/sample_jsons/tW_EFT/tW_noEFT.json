@@ -1,0 +1,19 @@
+ {
+    "xsec":1.0,
+    "year": "2017",
+    "treeName": "Events",
+    "histAxisName": "TLNuto2L2Nu_noEFT",
+    "options": "",
+    "WCnames": [],
+    "files":[
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_101.root",
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_102.root",
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_103.root",
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_104.root",
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_105.root",
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_106.root",
+        "/cms/cephfs/data/store/user/hnelson2/noEFT/nanoGen/tW/NanoGen_tW_noEFT/nanoGen_107.root"
+        ],
+    "nSumOfWeights": 1.0,
+    "isData": false
+}

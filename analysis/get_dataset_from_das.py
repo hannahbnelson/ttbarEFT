@@ -40,27 +40,29 @@ if __name__ == "__main__":
                 universal_newlines = True).stdout.split("\n")[:-1]
         )
 
-    ## Fill dictionary with file paths
-    d = {}
-    previous_dataset = ""
-    current_dataset = ""
-    redirector = "root://cmsxrootd.fnal.gov//"
-    for line in dbs_out:
-        current_dataset = line.split("/")[1]
+    print(dbs_out)
 
-        if current_dataset.lower() != previous_dataset.lower():
-            d.update({current_dataset: list().copy()})
+    # ## Fill dictionary with file paths
+    # d = {}
+    # previous_dataset = ""
+    # current_dataset = ""
+    # redirector = "root://cmsxrootd.fnal.gov//"
+    # for line in dbs_out:
+    #     current_dataset = line.split("/")[1]
 
-        # d[current_dataset].append(f"{redirector}{line}")    
-        d[current_dataset].append(f"{line}")
-        previous_dataset = current_dataset
+    #     if current_dataset.lower() != previous_dataset.lower():
+    #         d.update({current_dataset: list().copy()})
 
-    ## Dump datasets/files dict to JSON
-    with open(args.outputFile, "w") as f:
-        json.dump(
-            d,
-            f,
-            indent = 4,
-            sort_keys=True
-        )
-        print(f"Dumped JSON to {args.outputFile}!")
+    #     # d[current_dataset].append(f"{redirector}{line}")    
+    #     d[current_dataset].append(f"{line}")
+    #     previous_dataset = current_dataset
+
+    # ## Dump datasets/files dict to JSON
+    # with open(args.outputFile, "w") as f:
+    #     json.dump(
+    #         d,
+    #         f,
+    #         indent = 4,
+    #         sort_keys=True
+    #     )
+    #     print(f"Dumped JSON to {args.outputFile}!")
