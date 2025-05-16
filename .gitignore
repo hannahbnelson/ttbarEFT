@@ -4,6 +4,10 @@
 */.ipynb_checkpoints/*
 __pycache__/*
 .cache/*
+*.root
+*/__pycache__/*
+*/*/__pycache__/*
+*.png
 
 # User generated files from running code
 analysis/*/wq-executor-tmp-*
@@ -15,6 +19,8 @@ analysis/plots/*
 analysis/tmp*-tmp-*/
 analysis/*.pkl.gz
 analysis/*.pdf
+analysis/topeft-envs/
+build/
 
 # Distribution / packaging
 *.egg

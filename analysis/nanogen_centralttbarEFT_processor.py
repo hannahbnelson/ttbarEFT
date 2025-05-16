@@ -47,7 +47,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         print("self._wc_names_lst", self._wc_names_lst)
         print("\n\n")
 
-        proc_axis = hist.axis.StrCategory([], name="process", growth=True)
+        s
         chan_axis = hist.axis.StrCategory([], name="channel", growth=True)
         syst_axis = hist.axis.StrCategory([], name="systematic", label=r"Systematic Uncertainty", growth=True)
 
@@ -70,6 +70,11 @@ class AnalysisProcessor(processor.ProcessorABC):
             "mtt"       :HistEFT(
                             proc_axis,
                             hist.axis.Regular(bins=65, start=0, stop=1300, name='mtt', label='invariant mass of tops [GeV]'),
+                            wc_names=wc_names_lst,
+                            label="Events"),
+            "lhe_mtt"       :HistEFT(
+                            proc_axis,
+                            hist.axis.Regular(bins=65, start=0, stop=1300, name='lhe_mtt', label='invariant mass of tops (LHE) [GeV]'),
                             wc_names=wc_names_lst,
                             label="Events"),
             "mll"       :HistEFT(
@@ -169,6 +174,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         gen_top = ak.pad_none(genpart[is_final_mask & (abs(genpart.pdgId) == 6)],2)
         mtt = (gen_top[:,0] + gen_top[:,1]).mass
 
+        lhepart = events.LHEPart
+        lhe_mtt = (lhepart[:,0]+lhepart[:,1]+lhepart[:,2]+lhepart[:,3]+lhepart[:,4]+lhepart[:,5]+lhepart[:,6]+lhepart[:,7]).mass
+
         ######## Event selections ########
 
         nleps = ak.num(leps)
@@ -245,15 +253,17 @@ class AnalysisProcessor(processor.ProcessorABC):
         lhe_ht = events.LHE.HT[event_selection_mask]
         lhe_htincoming = events.LHE.HTIncoming[event_selection_mask] 
 
+        lhe_mtt_cut = lhe_mtt[event_selection_mask]
+
         ######## Normalization ########
 
         # Normalize by (xsec/sow)
         #lumi = 1000.0*get_lumi(year)
-        # norm = (xsec/sow)
+        norm = (xsec/sow)
         # norm = (1/sow_after_selec)
         # norm = (1/sow)
         # norm = (1/200)
-        norm = 1
+        # norm = 1
 
         # norm = 1/mtt_norm
 
@@ -272,15 +282,16 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         variables_to_fill = {
             "njets"     : njets_cut,
-            # "nleps"     : nleps_cut,
-            # "ntops"     : ntops_cut,
-            # "mtt"       : mtt_cut,
-            # "mll"       : mll,
-            # "dr_leps"   : dr_cut,
-            # "l0pt"      : ak.flatten(l0pt_cut),
-            # "tops_pt"   : tops_pt_cut,
-            # "avg_top_pt": avg_top_pt_cut,
-            # "sow"       : counts,
+            "nleps"     : nleps_cut,
+            "ntops"     : ntops_cut,
+            "mtt"       : mtt_cut,
+            "mll"       : mll,
+            "dr_leps"   : dr_cut,
+            "l0pt"      : ak.flatten(l0pt_cut),
+            "tops_pt"   : tops_pt_cut,
+            "avg_top_pt": avg_top_pt_cut,
+            "lhe_mtt"   : lhe_mtt_cut,
+            "sow"       : counts,
         }
 
         eft_coeffs_cut = eft_coeffs[event_selection_mask] if eft_coeffs is not None else None
@@ -290,9 +301,6 @@ class AnalysisProcessor(processor.ProcessorABC):
             if var_name not in self._hist_lst:
                 print(f"Skipping \"{var_name}\", it is not in the list of hists to include")
                 continue
-
-            print("\n\n event_weights: ", np.asarray(event_weights[event_selection_mask]).shape, "\n\n")
-            print("\n\n eft_coeffs: ", np.asarray(eft_coeffs_cut).shape, "\n\n")
 
             fill_info = {
                 var_name    : var_values,

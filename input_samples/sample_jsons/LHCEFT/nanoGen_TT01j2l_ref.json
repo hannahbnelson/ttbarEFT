@@ -1,9 +1,28 @@
 {
-  "xsec": 51.7997960319,
+  "xsec_file": 51.7997960319,
+  "xsec": 54.34264361345,
   "year": "2017",
   "treeName": "Events",
-  "histAxisName": "LO+1 jet (sample 1)",
+  "histAxisName": "TT01j2l(S1)",
   "options": "",
+  "WCnames": [
+    "cQd1", 
+    "ctj1", 
+    "cQj31", 
+    "ctj8", 
+    "ctd1", 
+    "ctd8", 
+    "ctGRe", 
+    "ctGIm", 
+    "cQj11", 
+    "cQj18", 
+    "ctu8", 
+    "cQd8", 
+    "ctu1", 
+    "cQu1", 
+    "cQj38", 
+    "cQu8"
+  ],
   "files": [
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_ref/nanoGen_1216.root",
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_ref/nanoGen_1222.root", 
@@ -11,5 +30,6 @@
     "/project01/ndcms/hnelson2/ttbarEFT/nanoGen/LHCEFT/TT01j2l_ref/nanoGen_1239.root" 
   ],
   "nSumOfWeights": 10359.95920638,
+  "nSumOfWeightsAfterSelec": 2329.50647292,
   "isData": false
 }

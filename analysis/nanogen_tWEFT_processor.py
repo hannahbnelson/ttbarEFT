@@ -244,8 +244,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         ######## Normalization ########
 
         # Normalize by (xsec/sow)
-        #lumi = 1000.0*get_lumi(year)
-        norm = (xsec/sow)
+        lumi = 1000.0*get_lumi(year)
+        norm = (xsec/sow)*lumi
         # norm = (1/sow)
         # norm = 1
 

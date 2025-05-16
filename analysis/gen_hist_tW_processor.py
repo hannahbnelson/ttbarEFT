@@ -26,7 +26,8 @@ SM_pt = {"ctGIm": 0.0, "ctGRe":0.0, "cHQ3": 0.0, "ctWRe": 0.0,
 rwgt_choice = SM_pt
 # rwgt_choice = st_pt
 
-# Get the lumi for the given year
+# Get the lumi for the given year (in fb^-1)
+# Ref: https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2#Luminosity_for_pp_13_TeV_data
 def get_lumi(year):
     lumi_dict = {
         "2016APV": 19.52,
@@ -239,14 +240,16 @@ class AnalysisProcessor(processor.ProcessorABC):
         ######## Normalization ########
 
         # Normalize by (xsec/sow)
-        #lumi = 1000.0*get_lumi(year)
+        lumi = 1000.0*get_lumi(year) #lumi is fb^-1, but xsec is in pb
 
+        tW_yukawa_const = 1.5217
         tW_new1_const = 1.5007769740968973
         tWtop_powheg_const = 1.845
         tWantitop_powheg_const = 1.845
 
-        # norm = (xsec/sow)
-        norm = (xsec/sow)*(1/tW_new1_const)
+        norm = (xsec/sow)*lumi
+        # norm = (xsec/sow)*(1/tW_yukawa_const)*lumi
+        # norm = (xsec/sow)*(1/tW_new1_const)
         # norm = (xsec/sow)*(1/tWtop_powheg_const)
         # norm = (xsec/sow)*(1/tWantitop_powheg_const)
 

@@ -134,23 +134,56 @@ class AnalysisProcessor(processor.ProcessorABC):
         njets = ak.num(jets_clean)
         ntops = ak.num(gen_top)
 
+        # Standard 2l2j selections
         at_least_two_leps = ak.fill_none(nleps>=2,False)
         at_least_two_jets = ak.fill_none(njets>=2,False)
-        # mtt_selec = ak.fill_none(mtt<700, False)
-        # mtt_selec = ak.fill_none(mtt > 900, False)
-        # mtt_selec1 = ak.fill_none(mtt >=700, False)
-        # mtt_selec2 = ak.fill_none(mtt <= 900, False)
 
         selections = PackedSelection()
         selections.add('2l', at_least_two_leps)
         selections.add('2j', at_least_two_jets)
+        event_selection_mask = selections.all('2l', '2j')
+        # mtt_norm = sow_after_selec
+
+        # # 2l2j selections & mtt < 700 
+        # at_least_two_leps = ak.fill_none(nleps>=2,False)
+        # at_least_two_jets = ak.fill_none(njets>=2,False)
+        # mtt_selec = ak.fill_none(mtt<700, False)
+
+        # selections = PackedSelection()
+        # selections.add('2l', at_least_two_leps)
+        # selections.add('2j', at_least_two_jets)
         # selections.add('mtt', mtt_selec)
+        # event_selection_mask = selections.all('2l', '2j', 'mtt')
+        # mtt_norm = self._samples[dataset]['nSumOfWeights_mtt_0_700']
+
+        # # 2l2j selections & 700 <= mtt <= 900
+        # at_least_two_leps = ak.fill_none(nleps>=2,False)
+        # at_least_two_jets = ak.fill_none(njets>=2,False)
+        # mtt_selec1 = ak.fill_none(mtt >=700, False)
+        # mtt_selec2 = ak.fill_none(mtt <= 900, False)
+
+        # selections = PackedSelection()
+        # selections.add('2l', at_least_two_leps)
+        # selections.add('2j', at_least_two_jets)
         # selections.add('mtt1', mtt_selec1)
         # selections.add('mtt2', mtt_selec2)
-        event_selection_mask = selections.all('2l', '2j')
-        # event_selection_mask = selections.all('2l', '2j', 'mtt')
         # event_selection_mask = selections.all('2l', '2j', 'mtt1', 'mtt2')
+        # mtt_norm = self._samples[dataset]['nSumOfWeights_mtt_700_900']
 
+        # # 2l2j selections mtt > 900
+        # at_least_two_leps = ak.fill_none(nleps>=2,False)
+        # at_least_two_jets = ak.fill_none(njets>=2,False)
+        # mtt_selec = ak.fill_none(mtt > 900, False)
+
+        # selections = PackedSelection()
+        # selections.add('2l', at_least_two_leps)
+        # selections.add('2j', at_least_two_jets)
+        # selections.add('mtt', mtt_selec)
+        # event_selection_mask = selections.all('2l', '2j', 'mtt')
+        # mtt_norm = self._samples[dataset]['nSumOfWeights_mtt_900_inf']
+
+
+        ######## Variables with Selections ########
         leps_cut = leps[event_selection_mask]
         dr_l0 = leps_cut[:,0]
         dr_l1 = leps_cut[:,1]
@@ -180,6 +213,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         # norm = (1/sow)
         # norm = (1/200)
         # norm = 1
+
+        # norm = 1/mtt_norm
+
         if eft_coeffs is None:
             genw = events["genWeight"]
         else:

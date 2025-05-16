@@ -53,11 +53,11 @@ pt5 = {'ctGIm': 3, 'ctGRe':3, 'cQj38':12.0, 'cQj18':10.0,
             'ctd8':18.0, 'cQj31':6.0, 'cQj11':6.0, 'cQu1':6.0,
             'cQd1':9, 'ctj1':5, 'ctu1':7, 'ctd1':9}
 
-# Larger WC values, ctG slightly smaller in commparison
-pt6 = {'ctGIm': 1.5, 'ctGRe':1.5, 'cQj38':12.0, 'cQj18':10.0,
-            'cQu8':8.0, 'cQd8':18.0, 'ctj8':6.0, 'ctu8':9,
-            'ctd8':18.0, 'cQj31':6.0, 'cQj11':6.0, 'cQu1':6.0,
-            'cQd1':9, 'ctj1':5, 'ctu1':7, 'ctd1':9}
+# Really large WC values
+pt6 = {'ctGIm': 4, 'ctGRe':4, 'cQj38':12.0, 'cQj18':12.0,
+            'cQu8':12.0, 'cQd8':12.0, 'ctj8':12.0, 'ctu8':12,
+            'ctd8':12.0, 'cQj31':12.0, 'cQj11':12.0, 'cQu1':12.0,
+            'cQd1':12, 'ctj1':12, 'ctu1':12, 'ctd1':12}
 
 # Get the lumi for the given year
 def get_lumi(year):
@@ -148,6 +148,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "weights_pt3_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt3_log", "$log_{10}$(event weight)", 70, -6, 1)),
             # "weights_pt4"       : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4", "event weight", 30, 0, 3)),
             "weights_pt4_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt4_log", "$log_{10}$(event weight)", 80, -6, 2)),
+            "weights_pt5_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt5_log", "$log_{10}$(event weight)", 80, -6, 2)),
+            "weights_pt6_log"   : HistEFT("Events", wc_names_lst, hist.Cat("sample", "sample"), hist.Bin("weights_pt6_log", "$log_{10}$(event weight)", 80, -6, 2)),
         }
 
         # Set the list of hists to to fill
@@ -216,24 +218,62 @@ class AnalysisProcessor(processor.ProcessorABC):
         njets = ak.num(jets_clean)
         ntops = ak.num(gen_top)
 
+        # # Standard 2l2j selections
+        # at_least_two_leps = ak.fill_none(nleps>=2,False)
+        # at_least_two_jets = ak.fill_none(njets>=2,False)
+
+        # selections = PackedSelection()
+        # selections.add('2l', at_least_two_leps)
+        # selections.add('2j', at_least_two_jets)
+        # event_selection_mask = selections.all('2l', '2j')
+
+        # # 2l2j selections & mtt < 700 
+        # at_least_two_leps = ak.fill_none(nleps>=2,False)
+        # at_least_two_jets = ak.fill_none(njets>=2,False)
+        # mtt_selec = ak.fill_none(mtt<700, False)
+
+        # selections = PackedSelection()
+        # selections.add('2l', at_least_two_leps)
+        # selections.add('2j', at_least_two_jets)
+        # selections.add('mtt', mtt_selec)
+        # event_selection_mask = selections.all('2l', '2j', 'mtt')
+
+        # # 2l2j selections & 700 <= mtt <= 900
+        # at_least_two_leps = ak.fill_none(nleps>=2,False)
+        # at_least_two_jets = ak.fill_none(njets>=2,False)
+        # mtt_selec1 = ak.fill_none(mtt >=700, False)
+        # mtt_selec2 = ak.fill_none(mtt <= 900, False)
+
+        # selections = PackedSelection()
+        # selections.add('2l', at_least_two_leps)
+        # selections.add('2j', at_least_two_jets)
+        # selections.add('mtt1', mtt_selec1)
+        # selections.add('mtt2', mtt_selec2)
+        # event_selection_mask = selections.all('2l', '2j', 'mtt1', 'mtt2')
+
+        # 2l2j selections mtt > 900
         at_least_two_leps = ak.fill_none(nleps>=2,False)
-        at_least_two_jets = ak.fill_none(njets>=2, False)
+        at_least_two_jets = ak.fill_none(njets>=2,False)
+        mtt_selec = ak.fill_none(mtt > 900, False)
 
         selections = PackedSelection()
         selections.add('2l', at_least_two_leps)
         selections.add('2j', at_least_two_jets)
-        event_selection_mask = selections.all('2l', '2j')
+        selections.add('mtt', mtt_selec)
+        event_selection_mask = selections.all('2l', '2j', 'mtt')
 
-        leps_cut = leps[event_selection_mask]
-        tops_pt_cut = gen_top.sum().pt[event_selection_mask]
-        njets_cut = njets[event_selection_mask]
-        nleps_cut = nleps[event_selection_mask]
-        mtt_cut = mtt[event_selection_mask]
-        ht_cut = ht[event_selection_mask]
-        ntops_cut = ntops[event_selection_mask]
-        jets_pt_cut = jets_clean.sum().pt[event_selection_mask]
-        j0pt_cut = j0.pt[event_selection_mask]
-        mll = (leps_cut[:,0] + leps_cut[:,1]).mass
+
+        ######## Variables with Selections ########
+        # leps_cut = leps[event_selection_mask]
+        # tops_pt_cut = gen_top.sum().pt[event_selection_mask]
+        # njets_cut = njets[event_selection_mask]
+        # nleps_cut = nleps[event_selection_mask]
+        # mtt_cut = mtt[event_selection_mask]
+        # ht_cut = ht[event_selection_mask]
+        # ntops_cut = ntops[event_selection_mask]
+        # jets_pt_cut = jets_clean.sum().pt[event_selection_mask]
+        # j0pt_cut = j0.pt[event_selection_mask]
+        # mll = (leps_cut[:,0] + leps_cut[:,1]).mass
         
         ######## Normalization ########
 
@@ -262,6 +302,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         wc_lst_pt2 = order_wc_values(self._wc_names_lst, pt2)
         wc_lst_pt3 = order_wc_values(self._wc_names_lst, pt3)
         wc_lst_pt4 = order_wc_values(self._wc_names_lst, pt4)
+        wc_lst_pt5 = order_wc_values(self._wc_names_lst, pt5)
+        wc_lst_pt6 = order_wc_values(self._wc_names_lst, pt6)
 
         event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
         event_weights_pt0 = calc_event_weights(eft_coeffs_cut, wc_lst_pt0)
@@ -269,6 +311,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         event_weights_pt2 = calc_event_weights(eft_coeffs_cut, wc_lst_pt2)
         event_weights_pt3 = calc_event_weights(eft_coeffs_cut, wc_lst_pt3)
         event_weights_pt4 = calc_event_weights(eft_coeffs_cut, wc_lst_pt4)
+        event_weights_pt5 = calc_event_weights(eft_coeffs_cut, wc_lst_pt5)
+        event_weights_pt6 = calc_event_weights(eft_coeffs_cut, wc_lst_pt6)
 
         weights_hist = np.ones_like(event_weights_SM)
 
@@ -285,6 +329,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             "weights_pt3_log"   : np.log10(event_weights_pt3),
             # "weights_pt4"       : event_weights_pt4,
             "weights_pt4_log"   : np.log10(event_weights_pt4),
+            "weights_pt5_log"   : np.log10(event_weights_pt5),
+            "weights_pt6_log"   : np.log10(event_weights_pt6),
         }
 
         for var_name, var_val in weights_to_fill.items():

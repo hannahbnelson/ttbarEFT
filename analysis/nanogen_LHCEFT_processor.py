@@ -14,10 +14,15 @@ from coffea.analysis_tools import PackedSelection
 from topcoffea.modules import utils
 import topcoffea.modules.eft_helper as efth
 
-SM_pts = {"ctGIm": 0.0, "ctGRe":0.0, "cQj38": 0.0, "cQj18": 0.0,
+SM_pt = {"ctGIm": 0.0, "ctGRe":0.0, "cQj38": 0.0, "cQj18": 0.0,
           "cQu8": 0.0, "cQd8": 0.0, "ctj8": 0.0, "ctu8": 0.0,
           "ctd8": 0.0, "cQj31": 0.0, "cQj11": 0.0, "cQu1": 0.0,
           "cQd1": 0.0, "ctj1": 0.0, "ctu1": 0.0, "ctd1": 0.0}
+
+st_pt = {"ctGIm": -0.5, "ctGRe":-0.5, "cQj38": 1.5, "cQj18": 1.5,
+          "cQu8": 1.5, "cQd8": 1.5, "ctj8": 1.5, "ctu8": 1.5,
+          "ctd8": 1.5, "cQj31": 1.5, "cQj11": 1.5, "cQu1": 1.5,
+          "cQd1": 1.5, "ctj1": 1.5, "ctu1": 1.5, "ctd1": 1.5}
 
 rwgt_pt1 = {"ctGIm": 1.0, "ctGRe":1.0, "cQj38": 3.0, "cQj18": 3.0,
           "cQu8": 3.0, "cQd8": 3.0, "ctj8": 3.0, "ctu8": 3.0,
@@ -244,7 +249,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             genw = events["genWeight"]
 
         else: 
-            wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pts)
+            wc_lst_SM = order_wc_values(self._wc_names_lst, SM_pt)
             event_weights_SM = calc_event_weights(eft_coeffs_cut, wc_lst_SM)
 
             wc_lst_pt1 = order_wc_values(self._wc_names_lst, rwgt_pt1)
